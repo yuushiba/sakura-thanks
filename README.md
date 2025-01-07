@@ -3,7 +3,7 @@
 ## サービス概要
 
 桜の写真と感謝のメッセージを共有できるプラットフォーム<br>
-思い出の桜写真に手書き風のメッセージを添えて特別な人に送れるサービ<br>
+思い出の桜写真に手書き風のメッセージを添えて特別な人に送れるサービス<br>
 桜の季節に合わせて過去の思い出を振り返り、新たな感謝を生み出すコミュニティ
 
 ## サービスへの想い、作りたい理由
@@ -77,6 +77,7 @@ SNS連携で広く共有
 ・プライバシーポリシー
 ・独自ドメイン
 ・i18nによる日本語化対応
+・パスワードリセット
 
 ## 機能の実装方針予定
 
@@ -95,3 +96,7 @@ omniauth-google-oauth2
 - その他
 rails-i18n
 gem 'ransack', '3.2.1'
+gem 'letter_opener_web'
+
+### 画面遷移図
+Figma：https://www.figma.com/design/SYo3jd4FYMEeWXp2F2paZU/sakura-thanks?t=NzoKCWBtm9kkttlz-0
