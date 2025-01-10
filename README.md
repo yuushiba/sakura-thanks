@@ -100,3 +100,7 @@ gem 'letter_opener_web'
 
 ### 画面遷移図
 Figma：https://www.figma.com/design/SYo3jd4FYMEeWXp2F2paZU/sakura-thanks?t=NzoKCWBtm9kkttlz-0
+
+### ER図
+（ER図のスクリーンショットの画像）
+[![Image from Gyazo](https://i.gyazo.com/51bb1cd6f3ec4a11e86dce42ab7e3776.png)](https://gyazo.com/51bb1cd6f3ec4a11e86dce42ab7e3776)
