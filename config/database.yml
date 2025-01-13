@@ -13,6 +13,9 @@ development:
 test:
   <<: *default
   database: sakura_thanks_test
+  host: <%= ENV.fetch("DATABASE_HOST", "db") %>
+  username: <%= ENV.fetch("DATABASE_USERNAME", "root") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD", "password") %>
 
 production:
   <<: *default
