@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sakura_thanks_development
+      # テストデータベースも作成
+      MYSQL_DATABASES: sakura_thanks_development,sakura_thanks_test
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/mysql-confd:/etc/mysql/conf.d
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -uroot -ppassword
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "bundle install && bundle exec rails db:prepare && rm -f tmp/pids/server.pid && ./bin/dev"
+    volumes:
+      - .:/sakura-thanks:cached
+      - bundle_data:/usr/local/bundle:cached
+      - node_modules:/sakura-thanks/node_modules:cached
+      - tmp-data:/sakura-thanks/tmp
+      - log-data:/sakura-thanks/log
+    environment:
+      TZ: Asia/Tokyo
+      RAILS_ENV: ${RAILS_ENV:-development}  # 環境変数で切り替え可能に
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: db
+      # テスト環境用の追加設定
+      TEST_DATABASE_URL: mysql2://root:password@db/sakura_thanks_test
+      DATABASE_HOST: db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    tty: true
+    stdin_open: true
+
+volumes:
+  mysql_data:
+  bundle_data:
+  node_modules:
+  tmp-data:
+  log-data:
