@@ -19,6 +19,8 @@ test:
 
 production:
   <<: *default
-  database: sakura_thanks_production
+  database: <%= ENV['SAKURA_THANKS_DATABASE'] %>
   username: <%= ENV["SAKURA_THANKS_DATABASE_USERNAME"] %>
   password: <%= ENV["SAKURA_THANKS_DATABASE_PASSWORD"] %>
+  host: <%= ENV['DATABASE_HOST'] %>
+  url: <%= ENV['DATABASE_URL'] %>
