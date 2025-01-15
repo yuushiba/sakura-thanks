@@ -1,0 +1,2 @@
+module TempTopPagesHelper
+end
