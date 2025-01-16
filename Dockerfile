@@ -15,6 +15,7 @@ RUN apt-get update -qq && \
     libxml2-dev \
     libxslt-dev \
     libyaml-dev \
+    libzstd-dev \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment

@@ -17,22 +17,24 @@ jobs:
       # ワークフローがリポジトリのコードにアクセスできる
       - uses: actions/checkout@v4
 
-      # Heroku CLIをインストール
-      # 後述のマイグレーションファイルで使用
-      - name: Install Heroku CLI
-        run: curl https://cli-assets.heroku.com/install.sh | sh
-        
-      # Herokuへのデプロイを実行
-      # 認証コードをGithubのSecretsから取得
-      - uses: akhileshns/heroku-deploy@v3.13.15
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "sakura-thanks-bec5c810b25a"
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+      - name: Login to Heroku Container Registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
 
-      # デプロイ後にマイグレーションを実行
-      # Heroku CLIを利用してRailsのマイグレーションコマンドを実行
-      - name: Run database migrations
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          docker build -t registry.heroku.com/sakura-thanks-bec5c810b25a/web .
+          docker push registry.heroku.com/sakura-thanks-bec5c810b25a/web
+
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web -a sakura-thanks-bec5c810b25a
+
+      - name: Database migration
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku run rails db:migrate -a sakura-thanks-bec5c810b25a
