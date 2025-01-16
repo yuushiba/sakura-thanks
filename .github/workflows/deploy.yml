@@ -22,6 +22,11 @@ jobs:
           curl https://cli-assets.heroku.com/install.sh | sh
           heroku --version
 
+      - name: Set Heroku stack to container
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku stack:set container -a sakura-thanks-bec5c810b25a
+      
       - name: Login to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
