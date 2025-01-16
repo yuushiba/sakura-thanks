@@ -1,0 +1,38 @@
+name: Deploy to heroku
+
+# mainブランチにpushされた時に実行
+on:
+  push:
+    branches:
+      - main
+
+# 実行されるジョブ
+jobs:
+  deploy:
+    # テスト環境を最新バージョンのUbuntu(Linux)に設定
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリのコードをチェックアウト
+      # ワークフローがリポジトリのコードにアクセスできる
+      - uses: actions/checkout@v4
+
+      # Heroku CLIをインストール
+      # 後述のマイグレーションファイルで使用
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+        
+      # Herokuへのデプロイを実行
+      # 認証コードをGithubのSecretsから取得
+      - uses: akhileshns/heroku-deploy@v3.13.15
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "stockmate"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+
+      # デプロイ後にマイグレーションを実行
+      # Heroku CLIを利用してRailsのマイグレーションコマンドを実行
+      - name: Run database migrations
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku run rails db:migrate -a stockmate
