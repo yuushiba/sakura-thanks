@@ -1,20 +1,15 @@
 name: Deploy to heroku
 
-# mainブランチにpushされた時に実行
 on:
   push:
     branches:
       - main
 
-# 実行されるジョブ
 jobs:
   deploy:
-    # テスト環境を最新バージョンのUbuntu(Linux)に設定
     runs-on: ubuntu-latest
 
     steps:
-      # リポジトリのコードをチェックアウト
-      # ワークフローがリポジトリのコードにアクセスできる
       - uses: actions/checkout@v4
 
       - name: Install Heroku CLI
@@ -25,8 +20,8 @@ jobs:
       - name: Set Heroku stack to container
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku stack:set container -a sakura-thanks-bec5c810b25a
-      
+        run: heroku stack:set container -a sakura-thanks
+
       - name: Login to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -36,15 +31,15 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
-          docker build -t registry.heroku.com/sakura-thanks-bec5c810b25a/web .
-          docker push registry.heroku.com/sakura-thanks-bec5c810b25a/web
+          docker build -t registry.heroku.com/sakura-thanks/web .
+          docker push registry.heroku.com/sakura-thanks/web
 
       - name: Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:release web -a sakura-thanks-bec5c810b25a
+        run: heroku container:release web -a sakura-thanks
 
       - name: Database migration
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku run rails db:migrate -a sakura-thanks-bec5c810b25a
+        run: heroku run rails db:migrate -a sakura-thanks
