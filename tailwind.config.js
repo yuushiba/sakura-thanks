@@ -3,14 +3,23 @@ module.exports = {
     './app/views/**/*.html.erb',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
-    './app/javascript/**/*.js',
-    './app/components/**/*.{erb,haml,html,slim}'
+    './app/javascript/**/*.js'
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'inter': ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark", "cupcake"], // 使用するテーマを指定
-  },
+    themes: [{
+      sakura: {
+        "primary": "#DD7594",
+        "base-100": "#E8EBF2",
+        "primary-content": "#FFFFFF",
+      }
+    }]
+  }
 }
