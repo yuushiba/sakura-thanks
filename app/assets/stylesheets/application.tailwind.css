@@ -15,7 +15,8 @@
     color: rgba(221, 117, 148, 1);
   }
 
-  .custom-text-white {
-    color: rgba(255, 255, 255, 1);
+  /* 白文字用のカスタムクラス */
+  .btn-text {
+    color: #FFFFFF;
   }
 }
