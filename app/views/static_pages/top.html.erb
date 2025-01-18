@@ -3,13 +3,18 @@
     <div class="mb-8">
       <%= image_tag "346b73ecd76ad3608a6b67470d7b86dd.jpg", alt: "桜の風景", class: "w-full rounded-lg shadow-lg" %>
     </div>
-    <h2 class="text-2xl font-semibold mb-4">
-      思い出の<span class="text-primary">桜</span>写真で大切な人に<span class="text-primary">感謝</span>を伝えよう
+    <h2 class="text-[#073472] text-2xl font-semibold mb-4">
+  思い出の<span class="text-[#DD7594]">桜</span>写真で大切な人に<span class="text-[#DD7594]">感謝</span>を伝えよう
     </h2>
+    <!-- アプリの使い方ボタンを追加 -->
+    <div class="mb-8">
+      <%= link_to "アプリの使い方", "#", class: "btn text-white border-none hover:opacity-80", style: "background-color: #4981CF;" %>
+    </div>
+  </div>
 
     <div class="flex justify-center gap-8 mt-8">
-      <%= link_to "投稿を見る", "#", class: "btn bg-primary text-white border-none hover:bg-primary/90" %>
-      <%= link_to "投稿する", "#", class: "btn bg-primary text-white border-none hover:bg-primary/90" %>
+      <%= link_to "投稿を見る", "#", class: "btn text-white border-none hover:opacity-80", style: "background-color: #DD7594;" %>
+      <%= link_to "投稿する", "#", class: "btn text-white border-none hover:opacity-80", style: "background-color: #DD7594;" %>
     </div>
   </div>
 </div>

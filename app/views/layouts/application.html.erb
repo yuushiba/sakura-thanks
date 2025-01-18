@@ -7,9 +7,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <!-- Inter フォントの追加 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
@@ -20,7 +18,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="min-h-screen bg-secondary flex flex-col">
+<body class="min-h-screen bg-base-100 flex flex-col">
     <%= render 'shared/header' %>
     <main class="flex-grow">
       <%= yield %>

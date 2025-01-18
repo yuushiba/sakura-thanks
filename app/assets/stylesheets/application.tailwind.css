@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    background-color: #E8EBF2;
+  }
+}
+
+@layer utilities {
+  .bg-header-footer {
+    background-color: #B9AAD3 !important;
+  }
+}
