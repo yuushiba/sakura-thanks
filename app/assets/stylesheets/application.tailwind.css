@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.header-background {
-  background-color: rgb(137, 170, 211);
+@layer components {
+  .header-background {
+    background-color: rgb(137, 170, 211);
+  }
+
+  .text-navy {
+    color: rgb(7, 52, 114);
+  }
+
+  .text-pink {
+    color: rgb(221, 117, 148);
+  }
 }
