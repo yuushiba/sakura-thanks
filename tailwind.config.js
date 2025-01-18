@@ -10,6 +10,12 @@ module.exports = {
       fontFamily: {
         'inter': ['Inter', 'sans-serif'],
       },
+      colors: {
+        'header-footer': 'rgb(137, 170, 211)',
+        'main-text': '#073472',
+        'accent': '#DD7594',
+        'button-blue': '#4981CF',
+      }
     },
   },
   plugins: [require("daisyui")],
