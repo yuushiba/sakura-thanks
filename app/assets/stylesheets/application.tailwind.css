@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .btn {
+    @apply text-[#FFFFFF];
+  }
+}
+
 @layer components {
   .header-background {
     background-color: rgba(137, 170, 211, 1);
@@ -13,10 +19,5 @@
 
   .text-pink {
     color: rgba(221, 117, 148, 1);
-  }
-
-  /* 白文字用のカスタムクラス */
-  .btn-text {
-    color: #FFFFFF;
   }
 }
