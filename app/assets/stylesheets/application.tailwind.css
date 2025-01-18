@@ -4,14 +4,14 @@
 
 @layer components {
   .header-background {
-    background-color: rgb(137, 170, 211);
+    background-color: rgba(137, 170, 211, 1);
   }
 
   .text-navy {
-    color: rgb(7, 52, 114);
+    color: rgba(7, 52, 114, 1);
   }
 
   .text-pink {
-    color: rgb(221, 117, 148);
+    color: rgba(221, 117, 148, 1);
   }
 }
