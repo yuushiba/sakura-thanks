@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="sakura" class="font-inter">
   <head>
     <title><%= content_for(:title) || "Sakura Thanks" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,6 +7,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- Inter フォントの追加 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
@@ -17,7 +20,11 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="min-h-screen bg-secondary flex flex-col">
+    <%= render 'shared/header' %>
+    <main class="flex-grow">
+      <%= yield %>
+    </main>
+    <%= render 'shared/footer' %>
   </body>
 </html>
