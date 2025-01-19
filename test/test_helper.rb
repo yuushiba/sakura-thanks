@@ -10,10 +10,10 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # テストユーザーのログイン状態をシミュレートするヘルパーメソッド
+# テストユーザーのログイン状態をシミュレートするヘルパーメソッド
 =begin
     def log_in(user)
-      post login_path, params: { 
+      post login_path, params: {
         email: user.email,
         password: 'password'  # fixtureで設定するパスワード
       }
