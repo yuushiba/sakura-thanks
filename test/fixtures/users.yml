@@ -1,0 +1,6 @@
+# test/fixtures/users.yml
+one:
+  name: 'Test User'
+  email: 'test@example.com'
+  crypted_password: <%= BCrypt::Password.create('secret') %>
+  salt: <%= salt = "asdasdastr4325234324sdfds" %>
