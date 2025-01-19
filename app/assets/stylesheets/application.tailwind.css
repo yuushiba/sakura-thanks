@@ -3,21 +3,7 @@
 @tailwind utilities;
 
 @layer utilities {
-  .btn {
-    @apply text-[#FFFFFF];
-  }
-}
-
-@layer components {
-  .header-background {
-    background-color: rgba(137, 170, 211, 1);
-  }
-
-  .text-navy {
-    color: rgba(7, 52, 114, 1);
-  }
-
-  .text-pink {
-    color: rgba(221, 117, 148, 1);
+  .custom-text {
+    color: #FFFFFF !important;
   }
 }
