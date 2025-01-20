@@ -1,31 +1,35 @@
 <div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl mb-4">ユーザー登録</h1>
+  <h1 style="color: #073472;" class="text-2xl font-bold text-center mb-8">新規登録</h1>
 
   <%= form_with(model: @user, local: true) do |f| %>
     <div class="space-y-4">
-      <div>
-        <%= f.label :name, "名前", class: "label" %>
-        <%= f.text_field :name, class: "input input-bordered w-full" %>
+      <div class="mx-auto w-3/5">
+        <%= f.label :name, "ユーザーネーム", class: "label", style: "color: #073472;" %>
+        <%= f.text_field :name, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
       </div>
 
-      <div>
-        <%= f.label :email, "メールアドレス", class: "label" %>
-        <%= f.email_field :email, class: "input input-bordered w-full" %>
+      <div class="mx-auto w-3/5">
+        <%= f.label :email, "メールアドレス", class: "label", style: "color: #073472;" %>
+        <%= f.email_field :email, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
       </div>
 
-      <div>
-        <%= f.label :password, "パスワード", class: "label" %>
-        <%= f.password_field :password, class: "input input-bordered w-full" %>
+      <div class="mx-auto w-3/5">
+        <%= f.label :password, "パスワード", class: "label", style: "color: #073472;" %>
+        <%= f.password_field :password, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
       </div>
 
-      <div>
-        <%= f.label :password_confirmation, "パスワード（確認）", class: "label" %>
-        <%= f.password_field :password_confirmation, class: "input input-bordered w-full" %>
+      <div class="mx-auto w-3/5">
+        <%= f.label :password_confirmation, "パスワード再入力", class: "label", style: "color: #073472;" %>
+        <%= f.password_field :password_confirmation, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
       </div>
 
-      <div class="mt-4">
-        <%= f.submit "登録", class: "btn btn-primary" %>
+      <div class="text-center mt-8">
+        <%= f.submit "新規登録", class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
       </div>
     </div>
   <% end %>
+
+  <div class="text-center mt-4">
+    <%= link_to 'ログインページはこちら', "#", style: "color: #073472;" %>
+  </div>
 </div>
