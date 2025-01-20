@@ -1,0 +1,30 @@
+<div class="container mx-auto max-w-xl px-4">
+  <h1 style="color: #073472;" class="text-2xl font-bold text-center mb-8">ログイン</h1>
+
+  <%= form_with url: login_path, local: true do |f| %>
+    <div class="space-y-6">
+      <div class="mx-auto w-3/5">
+        <%= f.label :email, "メールアドレス", class: "block mb-2", style: "color: #073472;" %>
+        <%= f.email_field :email, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
+      </div>
+
+      <div class="mx-auto w-3/5">
+        <%= f.label :password, "パスワード", class: "block mb-2", style: "color: #073472;" %>
+        <%= f.password_field :password, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
+      </div>
+
+      <div class="text-center mt-8">
+        <%= f.submit "ログイン", class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="text-center mt-4">
+    <div>
+      <%= link_to "新規登録はこちら", new_user_path, style: "color: #073472;" %>
+    </div>
+    <div class="mt-2">
+      <%= link_to "パスワードをお忘れの方はこちら", "#", style: "color: #073472;" %>
+    </div>
+  </div>
+</div>
