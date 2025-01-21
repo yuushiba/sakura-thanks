@@ -1,0 +1,21 @@
+<%# app/views/posts/_post.html.erb %>
+<div class="h-full flex flex-col">
+  <div class="card h-full shadow-lg" style="background-color: #FFFFFF; border: 1px solid #D1D5DB;" id="post-<%= post.id %>">
+    <div class="card-body">
+      <%# タイトル %>
+      <h2 class="card-title mb-2" style="color: #000000;">
+        <%= post.title %>
+      </h2>
+      
+      <%# 投稿者名 %>
+      <span class="text-sm mb-4" style="color: #000000;">
+        <%= post.user.name %>
+      </span>
+      
+      <%# 本文 %>
+      <p class="flex-grow" style="color: #000000;">
+        <%= truncate(post.content, length: 100) %>
+      </p>
+    </div>
+  </div>
+</div>
