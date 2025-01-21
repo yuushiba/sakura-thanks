@@ -1,0 +1,15 @@
+# app/views/posts/_post.html.erb
+<div class="card bg-white shadow-xl" id="post-<%= post.id %>">
+  <div class="card-body">
+    <h2 class="card-title"><%= post.title %></h2>
+    <p class="text-gray-600"><%= truncate(post.content, length: 100) %></p>
+    <div class="card-actions justify-between items-center mt-4">
+      <div class="flex items-center space-x-2">
+        <span class="text-sm"><%= post.user.name %></span>
+        <span class="text-sm text-gray-500">
+          <%= l post.created_at, format: :short %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
