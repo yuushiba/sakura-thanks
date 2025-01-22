@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6">新規投稿</h1>
+    
+    <%= form_with(model: @post, local: true, class: "space-y-6") do |f| %>
+      <div>
+        <%= f.label :title, "タイトル", class: "block text-sm font-medium mb-2" %>
+        <%= f.text_field :title, class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary" %>
+      </div>
+
+      <div>
+        <%= f.label :content, "内容", class: "block text-sm font-medium mb-2" %>
+        <%= f.text_area :content, rows: 5, class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary" %>
+      </div>
+
+      <div>
+        <%= f.submit "投稿する", class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+</div>
