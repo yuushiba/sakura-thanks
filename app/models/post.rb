@@ -6,6 +6,8 @@ class Post < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_one_attached :image  # Active Storageの関連付けを追加
 
+  validates :title, presence: { message: 'を入力してください' }
+  validates :content, presence: { message: 'を入力してください' }
   # 画像の検証
   validate :acceptable_image, if: :image_attached?
 
