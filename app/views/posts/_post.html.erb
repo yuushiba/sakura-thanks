@@ -1,21 +1,30 @@
-<%# app/views/posts/_post.html.erb %>
-<div class="h-full flex flex-col">
-  <div class="card h-full shadow-lg" style="background-color: #FFFFFF; border: 1px solid #D1D5DB;" id="post-<%= post.id %>">
-    <div class="card-body">
-      <%# タイトル %>
-      <h2 class="card-title mb-2" style="color: #000000;">
-        <%= post.title %>
-      </h2>
-      
-      <%# 投稿者名 %>
-      <span class="text-sm mb-4" style="color: #000000;">
-        <%= post.user.name %>
-      </span>
-      
-      <%# 本文 %>
-      <p class="flex-grow" style="color: #000000;">
-        <%= truncate(post.content, length: 100) %>
-      </p>
+<div class="h-full">
+  <div class="bg-white rounded-lg shadow-lg h-32">
+    <div class="flex h-full p-4">
+      <div class="w-1/4 pr-4">
+        <% if post.image.attached? %>
+          <%= image_tag post.image, class: "w-full h-full object-cover rounded-lg" %>
+        <% else %>
+          <%= image_tag "Cropped_Image copy.png", class: "w-full h-full object-cover rounded-lg" %>
+        <% end %>
+      </div>
+
+      <div class="flex-1 flex flex-col justify-between">
+        <div class="text-center">
+          <h2 class="text-lg font-bold" style="color: #000000;">
+            <%= post.title %>
+          </h2>
+          <p class="mt-1 text-sm" style="color: #000000;">
+            <%= truncate(post.content, length: 50) %>
+          </p>
+        </div>
+        
+        <div class="text-right">
+          <span class="text-xs" style="color: #000000;">
+            <%= post.user.name %>
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
