@@ -19,7 +19,7 @@ class Post < ApplicationRecord
   end
 
   def display_image
-    image.attached? ? image : 'Cropped_Image copy.png'
+    image.attached? ? image : "Cropped_Image copy.png"
   end
 
   # 画像のバリデーションロジック

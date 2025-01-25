@@ -12,7 +12,7 @@ def create
   @post = current_user.posts.build(post_params)
 
   if @post.save
-    redirect_to mypage_path, success: '投稿を作成しました'
+    redirect_to mypage_path, success: "投稿を作成しました"
   else
     render :new, status: :unprocessable_entity
   end
