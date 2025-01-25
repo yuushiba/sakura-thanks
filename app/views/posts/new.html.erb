@@ -20,7 +20,15 @@
             style: "::placeholder { color: #333333; }" %>
       </div>
 
-      <div class="mt-8 text-center">
+      <div>
+        <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+        <%= f.file_field :image, 
+            class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+            accept: "image/jpeg,image/gif,image/png" %>
+      </div>
+
+      <div class="mt-8 text-center space-x-4">
+        <%= link_to "キャンセル", mypage_path, class: "btn btn-neutral" %>
         <%= f.submit "投稿する", 
             class: "btn custom-text border-none hover:opacity-80", 
             style: "background-color: #DD7594;" %>
@@ -28,3 +36,4 @@
     <% end %>
   </div>
 </div>
+
