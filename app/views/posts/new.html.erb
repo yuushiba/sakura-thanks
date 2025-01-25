@@ -3,12 +3,30 @@
     <h1 class="text-2xl font-bold text-center mb-8" style="color: #073472;">新規投稿</h1>
     
     <%= form_with(model: @post, local: true, class: "space-y-6") do |f| %>
+      <%# 画像プレビューエリア %>
+      <div class="flex justify-center mb-6">
+        <div id="image-preview" class="w-1/2 aspect-square bg-[#D9D9D9] flex items-center justify-center overflow-hidden">
+          <% if @post.image.attached? %>
+            <%= image_tag @post.image, class: "w-full h-full object-cover" %>
+          <% else %>
+            <%= image_tag "Cropped_Image copy.png", class: "w-full h-full object-cover" %>
+          <% end %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :image, "画像を選択", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+        <%= f.file_field :image, 
+            class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+            accept: "image/jpeg,image/gif,image/png",
+            data: { action: "change->preview#updateImage" } %>
+      </div>
+
       <div>
         <%= f.label :title, "タイトル", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
         <%= f.text_field :title, 
             class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary", 
-            placeholder: "タイトルを入力してください",
-            style: "::placeholder { color: #333333; }" %>
+            placeholder: "タイトルを入力してください" %>
       </div>
 
       <div>
@@ -16,15 +34,7 @@
         <%= f.text_area :content, 
             rows: 5, 
             class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
-            placeholder: "内容を入力してください",
-            style: "::placeholder { color: #333333; }" %>
-      </div>
-
-      <div>
-        <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
-        <%= f.file_field :image, 
-            class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
-            accept: "image/jpeg,image/gif,image/png" %>
+            placeholder: "内容を入力してください" %>
       </div>
 
       <div class="mt-8 text-center space-x-4">
@@ -36,4 +46,23 @@
     <% end %>
   </div>
 </div>
+
+<%# プレビュー用JavaScript %>
+<%= javascript_tag do %>
+  document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.querySelector('input[type="file"]');
+    const previewArea = document.querySelector('#image-preview');
+
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewArea.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+<% end %>
 

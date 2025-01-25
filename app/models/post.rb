@@ -18,6 +18,10 @@ class Post < ApplicationRecord
     image.attached?
   end
 
+  def display_image
+    image.attached? ? image : 'Cropped_Image copy.png'
+  end
+
   # 画像のバリデーションロジック
   def acceptable_image
     # ファイルサイズの検証（5MB以下）
