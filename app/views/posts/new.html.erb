@@ -43,20 +43,32 @@
  </div>
 </div>
 
-<%= javascript_tag do %>
- document.addEventListener('DOMContentLoaded', function() {
-   const imageInput = document.querySelector('input[type="file"]');
-   const previewArea = document.querySelector('#image-preview');
+<%# app/views/posts/new.html.erb の最後に追加 %>
+<%= javascript_tag nonce: true do %>
+  document.addEventListener('turbo:load', function() {
+    setupImagePreview();
+  });
 
-   imageInput.addEventListener('change', function(e) {
-     const file = e.target.files[0];
-     if (file) {
-       const reader = new FileReader();
-       reader.onload = function(e) {
-         previewArea.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-       }
-       reader.readAsDataURL(file);
-     }
-   });
- });
+  document.addEventListener('DOMContentLoaded', function() {
+    setupImagePreview();
+  });
+
+  function setupImagePreview() {
+    const imageInput = document.querySelector('input[type="file"]');
+    const previewArea = document.querySelector('#image-preview');
+    
+    if (!imageInput || !previewArea) return; // 要素が存在しない場合は処理しない
+
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewArea.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  }
 <% end %>
+
