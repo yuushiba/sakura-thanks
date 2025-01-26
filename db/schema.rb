@@ -49,12 +49,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_23_114648) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
