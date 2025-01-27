@@ -6,9 +6,9 @@
       <%# 画像部分 %>
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <% if @post.image.attached? %>
-          <%= image_tag @post.image, class: "w-full h-64 object-cover" %>
+          <%= image_tag @post.image, class: "w-full" %>
         <% else %>
-          <%= image_tag "Cropped_Image copy.png", class: "w-full h-64 object-cover" %>
+          <%= image_tag "Cropped_Image copy.png", class: "w-full" %>
         <% end %>
       </div>
 
