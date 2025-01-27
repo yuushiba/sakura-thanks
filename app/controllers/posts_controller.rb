@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  skip_before_action :require_login, only: %i[index]
+  skip_before_action :require_login, only: %i[index show]
   def index
     @posts = Post.includes(:user).order(created_at: :desc)
   end
@@ -16,6 +16,10 @@ def create
   else
     render :new, status: :unprocessable_entity
   end
+end
+
+def show
+  @post = Post.find(params[:id])
 end
 
 private
