@@ -1,0 +1,72 @@
+<div class="container mx-auto px-4">
+ <div class="max-w-2xl mx-auto">
+   <%= form_with(model: post, local: true, class: "space-y-6") do |f| %>
+     <div class="flex justify-center mb-6">
+      <div id="image-preview" class="w-1/2 aspect-square flex items-center justify-center overflow-hidden" style="background-color: #D9D9D9 !important; min-height: 200px;">
+        <% if post.image.attached? %>
+          <%= image_tag post.image, class: "w-full h-full object-cover" %>
+        <% else %>
+          <div class="w-full h-full" style="background-color: #D9D9D9;"></div>
+        <% end %>
+      </div>
+    </div>
+
+     <div>
+       <%= f.label :title, "タイトル", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.text_field :title, 
+           class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary", 
+           placeholder: "タイトルを入力してください" %>
+     </div>
+
+     <div>
+       <%= f.label :content, "内容", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.text_area :content, 
+           rows: 5, 
+           class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+           placeholder: "内容を入力してください" %>
+     </div>
+
+     <div>
+       <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.file_field :image, 
+           class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+           accept: "image/jpeg,image/gif,image/png" %>
+     </div>
+
+     <div class="mt-8 text-center space-x-4">
+       <%= link_to "キャンセル", mypage_path, class: "btn btn-neutral" %>
+       <%= f.submit (post.new_record? ? "投稿する" : "更新する"), 
+           class: "btn custom-text border-none hover:opacity-80", 
+           style: "background-color: #DD7594;" %>
+     </div>
+   <% end %>
+ </div>
+</div>
+
+<%= javascript_tag nonce: true do %>
+  document.addEventListener('turbo:load', function() {
+    setupImagePreview();
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setupImagePreview();
+  });
+
+  function setupImagePreview() {
+    const imageInput = document.querySelector('input[type="file"]');
+    const previewArea = document.querySelector('#image-preview');
+    
+    if (!imageInput || !previewArea) return;
+
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewArea.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+<% end %>
