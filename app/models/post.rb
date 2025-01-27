@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   validates :title, presence: { message: "を入力してください" }
   validates :content, presence: { message: "を入力してください" }
   # 画像の検証
-  validate :acceptable_image, if: -> { image.attached? } 
+  validate :acceptable_image, if: -> { image.attached? }
 
   private
 
