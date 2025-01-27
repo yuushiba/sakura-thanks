@@ -9,7 +9,7 @@ class Post < ApplicationRecord
   validates :title, presence: { message: "を入力してください" }
   validates :content, presence: { message: "を入力してください" }
   # 画像の検証
-  validate :acceptable_image, if: :image_attached?
+  validate :acceptable_image, if: -> { image.attached? } 
 
   private
 
@@ -19,6 +19,7 @@ class Post < ApplicationRecord
 
   # 画像のバリデーションロジック
   def acceptable_image
+    return unless image.attached?  # 追加：早期リターン
     # ファイルサイズの検証（5MB以下）
     if image.blob.byte_size > 5.megabytes
       errors.add(:image, "は5MB以下にしてください")
