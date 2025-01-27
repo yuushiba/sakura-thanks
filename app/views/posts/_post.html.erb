@@ -2,17 +2,19 @@
   <div class="bg-white rounded-lg shadow-lg h-32">
     <div class="flex h-full p-4">
       <div class="w-1/4 pr-4">
-        <% if post.image.attached? %>
-          <%= image_tag post.image, class: "w-full h-full object-cover rounded-lg" %>
-        <% else %>
-          <%= image_tag "Cropped_Image copy.png", class: "w-full h-full object-cover rounded-lg" %>
+        <%= link_to post_path(post), class: "hover:opacity-80" do %>
+          <% if post.image.attached? %>
+            <%= image_tag post.image, class: "w-full h-full object-cover rounded-lg" %>
+          <% else %>
+            <%= image_tag "Cropped_Image copy.png", class: "w-full h-full object-cover rounded-lg" %>
+          <% end %>
         <% end %>
       </div>
 
       <div class="flex-1 flex flex-col justify-between">
         <div class="text-center">
           <h2 class="text-lg font-bold" style="color: #000000;">
-            <%= post.title %>
+            <%= link_to post.title, post_path(post), class: "hover:opacity-50" %>
           </h2>
           <p class="mt-1 text-sm" style="color: #000000;">
             <%= truncate(post.content, length: 50) %>
