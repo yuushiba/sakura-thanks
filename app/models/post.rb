@@ -13,11 +13,6 @@ class Post < ApplicationRecord
 
   private
 
-  # 画像が添付されているかをチェック
-  def image_attached?
-    image.attached?
-  end
-
   def display_image
     image.attached? ? image : "Cropped_Image copy.png"
   end
