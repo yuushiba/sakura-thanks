@@ -1,0 +1,8 @@
+setup:
+  addons:
+    - plan: jawsdb:kitefin
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: bundle exec rails server -p $PORT -b 0.0.0.0
