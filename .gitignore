@@ -39,3 +39,17 @@
 
 /node_modules
 *.sql
+
+# Mac
+.DS_Store
+
+# Database backups
+*.sql
+
+# Logs and temp files
+log/*
+tmp/*
+storage/*
+
+# Node modules
+node_modules/
