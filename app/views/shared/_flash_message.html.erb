@@ -1,0 +1,7 @@
+<div class="fixed top-4 left-1/2 transform -translate-x-1/2">
+  <% flash.each do |type, message| %>
+    <div class="alert text-white w-80 text-sm <%= type_to_alert_class(type) %>">
+      <%= message %>
+    </div>
+  <% end %>
+</div>

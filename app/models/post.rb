@@ -6,6 +6,14 @@ class Post < ApplicationRecord
   # has_many :favorites, dependent: :destroy
   has_one_attached :image  # Active Storageの関連付けを追加
 
+  # 属性名を日本語化
+  def self.human_attribute_name(attr, options = {})
+    {
+      title: 'タイトル',
+      content: '内容'
+    }[attr.to_sym] || super
+  end
+
   validates :title, presence: { message: "を入力してください" }
   validates :content, presence: { message: "を入力してください" }
   # 画像の検証
