@@ -14,6 +14,7 @@ def create
   if @post.save
     redirect_to mypage_path, success: "投稿を作成しました"
   else
+    flash.now[:danger] = "投稿の作成に失敗しました"
     render :new, status: :unprocessable_entity
   end
 end
