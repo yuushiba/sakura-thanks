@@ -2,13 +2,15 @@ module ApplicationHelper
   def type_to_alert_class(type)
     case type.to_sym
     when :success
-      'bg-[#36D399]'  # 緑色
-    when :danger
-      'bg-[#F87272]'  # 赤色
+      "alert-success"
+    when :danger, :error
+      "alert-error"
     when :warning
-      'bg-[#FBBD23]'  # 黄色
+      "alert-warning"
+    when :info
+      "alert-info"
     else
-      'bg-[#3ABFF8]'  # 青色
+      "alert-info"
     end
   end
 end

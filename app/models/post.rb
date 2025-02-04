@@ -9,8 +9,8 @@ class Post < ApplicationRecord
   # 属性名を日本語化
   def self.human_attribute_name(attr, options = {})
     {
-      title: 'タイトル',
-      content: '内容'
+      title: "タイトル",
+      content: "内容"
     }[attr.to_sym] || super
   end
 
