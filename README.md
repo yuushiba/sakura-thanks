@@ -81,9 +81,7 @@ SNS連携で広く共有<br>
 ## 機能の実装方針予定
 
 - 写真処理系
-MVPのときはACTIVERECORDをしようした基本的な画像アップロード。image_tagヘルパーメソッドによる画像表示
-本リリースのときは手書き風文字を取り入れたいためImage Magick + mini_magick gem
-gem 'carrierwave', '2.2.2'（画像アップロード）
+ACTIVERECORD＋image-processing gem
 
 - SNS連携
 X API Free
