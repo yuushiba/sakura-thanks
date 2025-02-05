@@ -1,13 +1,12 @@
-<div class="w-full max-w-2xl mx-auto">
-  <%= form_with model: [post, comment], local: true, class: "space-y-4" do |f| %>
-    <div>
+<div class="flex items-center gap-4">
+  <%= form_with model: [post, comment], class: "flex-1", local: true do |f| %>
+    <div class="flex items-center gap-4">
       <%= f.text_area :body, 
-          class: "w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary", 
-          placeholder: "コメントを入力してください",
-          rows: 3 %>
-    </div>
-    <div class="text-right">
-      <%= f.submit "コメントする", class: "px-4 py-2 bg-primary text-white rounded-lg hover:opacity-80" %>
+          class: "w-full px-3 py-2 border rounded-lg", 
+          placeholder: "コメントを入力" %>
+      <%= f.submit "コメント追加", 
+          class: "btn custom-text border-none hover:opacity-80",
+          style: "background-color: #DD7594;" %>
     </div>
   <% end %>
 </div>
