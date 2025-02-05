@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: %i[edit update destroy]
+  before_action :set_comment, only: %i[destroy]
 
   def create
     @comment = current_user.comments.build(comment_params)
@@ -9,20 +9,6 @@ class CommentsController < ApplicationController
     else
       flash[:error] = "コメントの投稿に失敗しました"
       redirect_to post_path(@comment.post)
-    end
-  end
-
-  def edit
-    @post = @comment.post
-  end
-
-  def update
-    if @comment.update(comment_params)
-      flash[:success] = "コメントを更新しました"
-      redirect_to post_path(@comment.post)
-    else
-      flash[:error] = "コメントの更新に失敗しました"
-      render :edit
     end
   end
 
