@@ -1,0 +1,26 @@
+<div class="bg-white rounded-lg shadow p-4 mb-4" id="comment-<%= comment.id %>">
+  <div class="flex justify-between items-start">
+    <div class="flex-1">
+      <p class="text-sm text-gray-600 mb-2">
+        <%= comment.user.name %> • 
+        <span class="text-gray-400">
+          <%= l comment.created_at, format: :long %>
+        </span>
+      </p>
+      <p class="text-gray-800"><%= comment.body %></p>
+    </div>
+    
+    <% if current_user&.id == comment.user_id %>
+      <div class="flex space-x-2">
+        <%= link_to edit_comment_path(comment), class: "text-neutral hover:opacity-80" do %>
+          <i class="bi bi-pencil"></i>
+        <% end %>
+        <%= link_to comment_path(comment), 
+            data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+            class: "text-error hover:opacity-80" do %>
+          <i class="bi bi-trash"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
