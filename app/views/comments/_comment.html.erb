@@ -1,0 +1,22 @@
+<div class="bg-white rounded-lg shadow p-4 mb-4" id="comment-<%= comment.id %>">
+  <div class="flex justify-between items-start">
+    <div class="flex-1">
+      <p class="text-sm" style="color: #000000;">
+        <%= comment.user.name %>
+      </p>
+      <p class="mt-2" style="color: #000000;">
+        <%= comment.body %>
+      </p>
+    </div>
+    
+    <% if current_user&.id == comment.user_id %>
+      <div>
+        <%= button_to '削除', comment_path(comment), 
+            method: :delete,
+            class: 'btn custom-text border-none hover:opacity-80',
+            style: "background-color: #D9D9D9;",
+            data: { turbo_confirm: 'コメントを削除してもよろしいですか？' } %>
+      </div>
+    <% end %>
+  </div>
+</div>
