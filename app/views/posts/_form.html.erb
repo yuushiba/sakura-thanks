@@ -3,25 +3,29 @@
     <%= form_with(model: post, local: true, class: "space-y-6") do |f| %>
       <%# エラーメッセージ表示部分 %>
       <% if post.errors.any? %>
-  <div class="space-y-2 mb-4">
-    <% post.errors.full_messages.each do |message| %>
-      <div class="alert alert-error w-full text-sm shadow-lg">
-        <%= message %>
+        <div class="space-y-2 mb-4">
+          <% post.errors.full_messages.each do |message| %>
+            <div class="alert alert-error w-full text-sm shadow-lg">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      
+      <%# 画像プレビュー部分 %>
+      <div class="flex justify-center mb-6">
+        <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden" style="background-color: #D9D9D9 !important; min-height: 200px;">
+          <% if post.persisted? && post.image.attached? %>
+            <%= image_tag post.image, class: "w-full h-full object-cover" %>
+          <% else %>
+            <!-- グレーのデフォルト画像表示（サイズ調整） -->
+            <div class="w-1/2 h-1/2 flex items-center justify-center" style="background-color: #D9D9D9;">
+              <span class="text-gray-600">画像を選択</span>
+            </div>
+          <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
-<% end %>
-      <%# 既存のフォーム部分 %>
-     <div class="flex justify-center mb-6">
-      <div id="image-preview" class="w-1/2 flex items-center justify-center overflow-hidden" style="background-color: #D9D9D9 !important; min-height: 200px;">
-        <% if post.persisted? && post.image.attached? %>
-          <%= image_tag post.image, class: "w-full h-full object-cover" %>
-        <% else %>
-          <div class="w-full h-full" style="background-color: #D9D9D9;"></div>
-        <% end %>
-      </div>
-    </div>
-
+      
      <div>
        <%= f.label :title, "タイトル", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
        <%= f.text_field :title, 
