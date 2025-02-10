@@ -10,14 +10,13 @@ class Post < ApplicationRecord
    def image_with_text
     return image unless image.attached? && overlay_text.present?
 
-    # variantメソッドの書き方を修正
-    image.variant({
-      resize_to_limit: [800, 800],
-      gravity: 'Northwest',
-      draw: "text #{text_x_position},#{text_y_position} '#{overlay_text}'",
-      fill: 'white',
-      pointsize: '24'
-    })
+    # Rails 7.2 の書き方に合わせて修正
+  image.variant(resize_to_limit: [800, 800]) do |builder|
+    builder.draw("text #{text_x_position},#{text_y_position} '#{overlay_text}'")
+    builder.font("/rails/app/assets/fonts/Yomogi-Regular.ttf")
+    builder.fill("white")
+    builder.pointsize(24)
+  end
   end
   
   # 属性名を日本語化

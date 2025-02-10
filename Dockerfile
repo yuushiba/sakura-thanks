@@ -18,7 +18,11 @@ RUN apt-get update -qq && \
     libzstd-dev \
     imagemagick \
     libmagickwand-dev \
+    fonts-ipafont \
+    fontconfig \
+    && fc-cache -f -v \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 
 # Set production environment
 ENV RAILS_ENV="production" \
