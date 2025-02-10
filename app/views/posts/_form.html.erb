@@ -20,7 +20,7 @@
           <% else %>
             <!-- グレーのデフォルト画像表示（サイズ調整） -->
             <div class="w-1/2 h-1/2 flex items-center justify-center" style="background-color: #D9D9D9;">
-              <span class="text-gray-600">画像を選択</span>
+              <span class="text-gray-600">画像を選択してください</span>
             </div>
           <% end %>
         </div>
@@ -47,6 +47,28 @@
            class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
            accept: "image/jpeg,image/gif,image/png" %>
      </div>
+
+     <div data-controller="image-text">
+     <div>
+       <%= f.label :overlay_text, "画像に入れたい文字(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.text_field :overlay_text, 
+           class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+           placeholder: "文字を入力してください",
+           data: { "image-text-target": "input" } %>
+     </div>
+   
+     <div class="mt-4">
+       <label class="block text-sm font-medium mb-2" style="color: #073472;">文字の位置調整(任意)</label>
+       <div class="flex justify-center gap-2">
+         <%= f.hidden_field :text_x_position, data: { "image-text-target": "xPosition" } %>
+         <%= f.hidden_field :text_y_position, data: { "image-text-target": "yPosition" } %>
+         <button type="button" class="btn btn-sm btn-primary" data-action="image-text#moveUp">↑</button>
+         <button type="button" class="btn btn-sm btn-primary" data-action="image-text#moveLeft">←</button>
+         <button type="button" class="btn btn-sm btn-primary" data-action="image-text#moveRight">→</button>
+         <button type="button" class="btn btn-sm btn-primary" data-action="image-text#moveDown">↓</button>
+       </div>
+     </div>
+   </div>
 
      <div class="mt-8 text-center space-x-4">
        <%= link_to "キャンセル", mypage_path, class: "btn btn-neutral" %>

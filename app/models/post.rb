@@ -4,8 +4,22 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
   # has_many :favorites, dependent: :destroy
-  has_one_attached :image  # Active Storageの関連付けを追加
+  # Active Storageの関連付けを追加
+  has_one_attached :image 
+   # プレビュー用のメソッド
+   def image_with_text
+    return image unless image.attached? && overlay_text.present?
 
+    # variantメソッドの書き方を修正
+    image.variant({
+      resize_to_limit: [800, 800],
+      gravity: 'Northwest',
+      draw: "text #{text_x_position},#{text_y_position} '#{overlay_text}'",
+      fill: 'white',
+      pointsize: '24'
+    })
+  end
+  
   # 属性名を日本語化
   def self.human_attribute_name(attr, options = {})
     {
@@ -24,6 +38,11 @@ class Post < ApplicationRecord
   def display_image
     image.attached? ? image : "Cropped_Image copy.png"
   end
+
+  # 新しいカラムのバリデーション
+  validates :text_x_position, numericality: { only_integer: true }, allow_nil: true
+  validates :text_y_position, numericality: { only_integer: true }, allow_nil: true
+  validates :overlay_text, length: { maximum: 50 }  
 
   private
 

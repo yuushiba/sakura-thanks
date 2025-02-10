@@ -1,16 +1,26 @@
+<%# app/views/posts/_post.html.erb %>
 <div class="h-full">
   <div class="bg-white rounded-lg shadow-lg h-32">
     <div class="flex h-full p-4">
+      <%# 左側の画像部分 %>
       <div class="w-1/4 pr-4">
         <%= link_to post_path(post), class: "hover:opacity-80" do %>
-          <% if post.image.attached? %>
-            <%= image_tag post.image, class: "w-full h-full object-cover rounded-lg" %>
-          <% else %>
-            <%= image_tag "Cropped_Image copy.png", class: "w-full h-full object-cover rounded-lg" %>
-          <% end %>
+<% if post.image.attached? %>
+  <% if post.overlay_text.present? %>
+    <%= image_tag post.image_with_text,
+        class: "w-full h-full object-cover rounded-lg" %>
+  <% else %>
+    <%= image_tag post.image,
+        class: "w-full h-full object-cover rounded-lg" %>
+  <% end %>
+<% else %>
+  <%= image_tag "Cropped_Image copy.png",
+      class: "w-full h-full object-cover rounded-lg" %>
+<% end %>
         <% end %>
       </div>
 
+      <%# 右側のテキスト部分 %>
       <div class="flex-1 flex flex-col justify-between">
         <div class="text-center">
           <h2 class="text-lg font-bold" style="color: #000000;">
@@ -20,7 +30,6 @@
             <%= truncate(post.content, length: 50) %>
           </p>
         </div>
-        
         <div class="text-right">
           <span class="text-xs" style="color: #000000;">
             <%= post.user.name %>

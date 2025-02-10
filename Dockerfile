@@ -16,6 +16,8 @@ RUN apt-get update -qq && \
     libxslt-dev \
     libyaml-dev \
     libzstd-dev \
+    imagemagick \
+    libmagickwand-dev \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
