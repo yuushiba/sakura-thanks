@@ -78,6 +78,8 @@ RUN gem install bundler -v 2.6.2 && \
 # Node.jsの依存関係をインストール
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
+RUN yarn add -D tailwindcss @tailwindcss/forms esbuild
+RUN yarn global add tailwindcss esbuild
 
 # アプリケーションのコピー
 COPY . .
