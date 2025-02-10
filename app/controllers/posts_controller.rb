@@ -12,14 +12,16 @@ def create
   @post = current_user.posts.build(post_params)
 
   if @post.save
-    begin
-      # 画像とテキストがある場合だけ処理する
-      if @post.overlay_text.present? && @post.image.attached?
-        @post.preview_with_text&.processed
+    if @post.overlay_text.present? && @post.image.attached?
+      # image_with_textメソッドを使用
+      begin
+        # variant生成を明示的に実行
+        @post.image_with_text.processed
+        Rails.logger.debug "Image processing completed successfully"
+      rescue => e
+        Rails.logger.error "Image processing error: #{e.message}\n#{e.backtrace.join("\n")}"
+        # エラーが発生しても投稿自体は保存する
       end
-    rescue => e
-      # エラーが起きても投稿自体は保存されるようにする
-      Rails.logger.error "画像処理でエラーが発生: #{e.message}"
     end
     redirect_to mypage_path, success: "投稿を作成しました"
   else

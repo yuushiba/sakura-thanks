@@ -10,15 +10,32 @@ class Post < ApplicationRecord
    def image_with_text
     return image unless image.attached? && overlay_text.present?
 
-    # Rails 7.2 の書き方に合わせて修正
-  image.variant(resize_to_limit: [800, 800]) do |builder|
-    builder.draw("text #{text_x_position},#{text_y_position} '#{overlay_text}'")
-    builder.font("/rails/app/assets/fonts/Yomogi-Regular.ttf")
-    builder.fill("white")
-    builder.pointsize(24)
+    # デバッグログの追加
+    Rails.logger.debug "Generating variant with text: #{overlay_text}"
+    Rails.logger.debug "Position: (#{text_x_position || 10}, #{text_y_position || 10})"
+
+    # バリアントの生成方法を修正
+    image.variant(
+      resize_to_limit: [800, 800]
+    ) do |vips|
+      # フォントファイルのパスを確認
+      font_path = Rails.root.join('app/assets/fonts/Yomogi-Regular.ttf').to_s
+      
+      # テキスト描画の位置を設定（デフォルト値を提供）
+      x = text_x_position || 10
+      y = text_y_position || 10
+
+      vips.composite(
+        vips.text(overlay_text,
+          font: font_path,
+          width: 800,
+          height: 100,
+          rgba: true),
+        x, y
+      )
+    end
   end
-  end
-  
+
   # 属性名を日本語化
   def self.human_attribute_name(attr, options = {})
     {

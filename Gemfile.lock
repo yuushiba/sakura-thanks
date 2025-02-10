@@ -388,6 +388,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.2.2, >= 7.2.2.1)
   rubocop-rails-omakase
+  ruby-vips
   selenium-webdriver
   sorcery (= 0.16.3)
   sprockets-rails
