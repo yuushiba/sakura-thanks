@@ -14,6 +14,7 @@ ENV RAILS_ENV="development" \
     PATH="/usr/local/node/bin:/usr/local/bundle/bin:/usr/local/bin:${PATH}"
 
 # 基本パッケージのインストール
+# フォント関連のパッケージを追加
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
@@ -24,9 +25,11 @@ RUN apt-get update -qq && \
     git \
     nodejs \
     npm \
-    # 画像処理に必要なパッケージ
+    # 画像処理関連パッケージ
     imagemagick \
     libmagickwand-dev \
+    # フォント関連パッケージ
+    fontconfig \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -43,12 +46,33 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN yarn install
 
+# フォントのセットアップ
+# フォントディレクトリの作成と権限設定を確実に
+RUN mkdir -p /usr/share/fonts/truetype/custom && \
+    chmod 755 /usr/share/fonts/truetype/custom
+
+# フォントファイルのコピーと設定
+COPY app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/
+RUN chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
+    fc-cache -fv && \
+    # フォントが正しく認識されているか確認
+    fc-list | grep -i "Yomogi" || echo "Warning: Yomogi font not found in fc-list"
+
 # アプリケーションのコピー
 COPY . .
 
 # 権限設定
 RUN mkdir -p tmp/pids log storage/development && \
     chmod -R 777 tmp log storage
+
+# ImageMagickポリシーの設定
+# フォントへのアクセスを許可
+RUN if [ -f /etc/ImageMagick-6/policy.xml ]; then \
+    sed -i 's/<policy domain="coder" rights="none" pattern="PDF" \/>/<policy domain="coder" rights="read|write" pattern="PDF" \/>/' /etc/ImageMagick-6/policy.xml; \
+    fi
+
+# フォントの最終確認
+RUN convert -list font | grep -i "Yomogi" || echo "Warning: Yomogi font not found in ImageMagick"
 
 # サーバー起動設定
 EXPOSE 3000
