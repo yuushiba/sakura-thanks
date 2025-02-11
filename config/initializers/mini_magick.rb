@@ -1,4 +1,4 @@
-require 'mini_magick'
+require "mini_magick"
 
 # ImageMagickのパスを設定
 MiniMagick.configure do |config|

@@ -48,7 +48,7 @@
      </div>
 
      <div>
-       <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.label :image, "画像(任意)（実装中のため未反映）", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
        <%= f.file_field :image, 
            class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
            accept: "image/jpeg,image/gif,image/png" %>
@@ -56,7 +56,7 @@
 
      <div data-controller="image-text">
      <div>
-       <%= f.label :overlay_text, "画像に入れたい文字(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+       <%= f.label :overlay_text, "画像に入れたい文字(任意)（実装中のため未反映）", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
        <%= f.text_field :overlay_text, 
            class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
            placeholder: "文字を入力してください",
@@ -64,7 +64,7 @@
      </div>
    
      <div class="mt-4">
-       <label class="block text-sm font-medium mb-2" style="color: #073472;">文字の位置調整(任意)</label>
+       <label class="block text-sm font-medium mb-2" style="color: #073472;">文字の位置調整(任意)（実装中のため未反映）</label>
        <div class="flex justify-center gap-2">
          <%= f.hidden_field :text_x_position, data: { "image-text-target": "xPosition" } %>
          <%= f.hidden_field :text_y_position, data: { "image-text-target": "yPosition" } %>

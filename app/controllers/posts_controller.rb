@@ -10,7 +10,7 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params)
-    
+
     if @post.save
       if @post.overlay_text.present? && @post.image.attached?
         begin
@@ -67,9 +67,9 @@ private
 
   def post_params
     params.require(:post).permit(
-    :title, 
-    :content, 
-    :image, 
+    :title,
+    :content,
+    :image,
     :overlay_text,
     :text_x_position,
     :text_y_position)
