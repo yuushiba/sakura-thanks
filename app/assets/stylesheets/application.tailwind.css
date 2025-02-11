@@ -7,3 +7,9 @@
     color: #FFFFFF !important;
   }
 }
+
+/* app/assets/stylesheets/application.tailwind.css */
+@font-face {
+  font-family: 'YOMOGI';
+  src: url('../fonts/YOMOGI-Regular.ttf') format('truetype');
+}

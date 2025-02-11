@@ -1,85 +1,79 @@
-# syntax = docker/dockerfile:1
-
+# ベースイメージの設定
 ARG RUBY_VERSION=3.3.6
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+FROM ruby:$RUBY_VERSION-slim
 
+# 作業ディレクトリの設定
 WORKDIR /rails
 
-# Install base packages with additional dependencies
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    curl \
-    default-mysql-client \
-    libjemalloc2 \
-    libvips \
-    libxml2-dev \
-    libxslt-dev \
-    libyaml-dev \
-    libzstd-dev \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
+# 環境変数の設定
+ENV RAILS_ENV="development" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development:test"
+    BUNDLE_WITHOUT="test" \
+    LANG=C.UTF-8 \
+    NODE_ENV="development" \
+    PATH="/usr/local/node/bin:/usr/local/bundle/bin:/usr/local/bin:${PATH}"
 
-FROM base AS build
-
-# Install build dependencies
+# 基本パッケージのインストール
+# フォント関連のパッケージを追加
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    default-libmysqlclient-dev \
+    curl \
+    default-mysql-client \
+    libpq-dev \
+    libmysqlclient-dev \
     git \
-    node-gyp \
-    pkg-config \
-    python-is-python3 \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    nodejs \
+    npm \
+    # 画像処理関連パッケージ
+    imagemagick \
+    libmagickwand-dev \
+    # フォント関連パッケージ
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
-# Install JavaScript dependencies
-ARG NODE_VERSION=20.18.1
-ARG YARN_VERSION=1.22.22
-ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+# Node.jsとYarnのセットアップ
+RUN npm install -g yarn && \
+    yarn global add esbuild tailwindcss @tailwindcss/forms && \
+    yarn config set prefix /usr/local
 
-# Install specific bundler version and application gems
+# Gemfileのコピーとインストール
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler -v 2.6.2 && \
-    bundle config set --local deployment 'true' && \
-    bundle config set --local without 'development test' && \
-    bundle install --jobs 4 --retry 3 && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
+RUN bundle install
 
-# Install node modules
+# Node.js依存関係のインストール
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
+# フォントのセットアップ
+# フォントディレクトリの作成と権限設定を確実に
+RUN mkdir -p /usr/share/fonts/truetype/custom && \
+    chmod 755 /usr/share/fonts/truetype/custom
+
+# フォントファイルのコピーと設定
+COPY app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/
+RUN chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
+    fc-cache -fv && \
+    # フォントが正しく認識されているか確認
+    fc-list | grep -i "Yomogi" || echo "Warning: Yomogi font not found in fc-list"
+
+# アプリケーションのコピー
 COPY . .
 
-# Precompile bootsnap code and assets
-RUN bundle exec bootsnap precompile app/ lib/ && \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# 権限設定
+RUN mkdir -p tmp/pids log storage/development && \
+    chmod -R 777 tmp log storage
 
-RUN rm -rf node_modules
+# ImageMagickポリシーの設定
+# フォントへのアクセスを許可
+RUN if [ -f /etc/ImageMagick-6/policy.xml ]; then \
+    sed -i 's/<policy domain="coder" rights="none" pattern="PDF" \/>/<policy domain="coder" rights="read|write" pattern="PDF" \/>/' /etc/ImageMagick-6/policy.xml; \
+    fi
 
-# Final stage
-FROM base
+# フォントの最終確認
+RUN convert -list font | grep -i "Yomogi" || echo "Warning: Yomogi font not found in ImageMagick"
 
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
-
-# Set up rails user
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    mkdir -p db log storage tmp && \
-    chown -R rails:rails db log storage tmp
-USER 1000:1000
-
-# Configure the entrypoint and command
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# サーバー起動設定
 EXPOSE 3000
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
