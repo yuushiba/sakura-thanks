@@ -21,7 +21,8 @@ RUN apt-get update -qq && \
     curl \
     default-mysql-client \
     libpq-dev \
-    libmysqlclient-dev \
+    libmariadb-dev-compat \
+    libmariadb-dev \
     git \
     nodejs \
     npm \
