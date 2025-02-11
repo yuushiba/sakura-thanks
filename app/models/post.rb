@@ -4,7 +4,29 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
   # has_many :favorites, dependent: :destroy
-  has_one_attached :image  # Active Storageの関連付けを追加
+  # Active Storageの関連付けを追加
+  has_one_attached :image
+
+  # variant定義を追加
+  def preview_with_text
+    return image unless image.attached? && overlay_text.present?
+    image.variant(
+    resize_to_limit: [ 800, 800 ],
+    # フォントパスを修正
+    # 一時的にDejaVu Sansを使用（デフォルトで利用可能）
+    font: "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    fill: "white",
+    stroke: "#000000",
+    strokewidth: "2",
+    gravity: "northwest",
+    draw: "text #{text_x_position + 20},#{text_y_position + 20} '#{overlay_text}'"
+  )
+  end
+
+  # 表示用のメソッドも同様に修正
+  def image_with_text
+    preview_with_text
+  end
 
   # 属性名を日本語化
   def self.human_attribute_name(attr, options = {})
@@ -24,6 +46,58 @@ class Post < ApplicationRecord
   def display_image
     image.attached? ? image : "Cropped_Image copy.png"
   end
+
+  def debug_image_processing
+    return { success: false, message: "No image or text" } unless image.attached? && overlay_text.present?
+
+    begin
+      variant = preview_with_text
+      processed = variant.processed
+      Rails.logger.info "画像処理成功: #{overlay_text}"
+      { success: true, message: "画像処理成功", variant: variant }
+    rescue => e
+      Rails.logger.error "画像処理エラー: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      { success: false, message: e.message }
+    end
+  end
+
+  def debug_font_path
+    font_path = "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf"
+    {
+      exists: File.exist?(font_path),
+      readable: File.readable?(font_path),
+      path: font_path
+    }
+  end
+
+  def debug_font_setup
+    font_path = Rails.root.join("app/assets/fonts/Yomogi-Regular.ttf").to_s
+    docker_font_path = "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf"
+
+    {
+      rails_root: Rails.root.to_s,
+      app_font_exists: File.exist?(font_path),
+      app_font_readable: File.readable?(font_path),
+      docker_font_exists: File.exist?(docker_font_path),
+      docker_font_readable: File.readable?(docker_font_path)
+    }
+  end
+  def debug_font_info
+    {
+      available_fonts: `fc-list`.split("\n"),
+      image_magick_fonts: `convert -list font`.split("\n"),
+      current_font: "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf",
+      font_exists: File.exist?("/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf")
+    }
+  rescue => e
+    { error: e.message }
+  end
+
+  # 新しいカラムのバリデーション
+  validates :text_x_position, numericality: { only_integer: true }, allow_nil: true
+  validates :text_y_position, numericality: { only_integer: true }, allow_nil: true
+  validates :overlay_text, length: { maximum: 50 }
 
   private
 

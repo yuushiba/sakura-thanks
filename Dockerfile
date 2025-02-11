@@ -1,85 +1,95 @@
-# syntax = docker/dockerfile:1
-
+# ベースイメージの設定
 ARG RUBY_VERSION=3.3.6
-FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+FROM ruby:$RUBY_VERSION-slim as builder
 
+# 作業ディレクトリの設定
 WORKDIR /rails
 
-# Install base packages with additional dependencies
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    curl \
-    default-mysql-client \
-    libjemalloc2 \
-    libvips \
-    libxml2-dev \
-    libxslt-dev \
-    libyaml-dev \
-    libzstd-dev \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Set production environment
+# 本番環境の設定
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development:test"
+    BUNDLE_WITHOUT="development:test" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_LOG_TO_STDOUT="true"
 
-FROM base AS build
-
-# Install build dependencies
+# 基本パッケージのインストール
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    default-libmysqlclient-dev \
+    curl \
+    default-mysql-client \
+    libpq-dev \
+    libmariadb-dev-compat \
+    libmariadb-dev \
     git \
-    node-gyp \
-    pkg-config \
-    python-is-python3 \
-    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    nodejs \
+    npm \
+    imagemagick \
+    libmagickwand-dev \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
-# Install JavaScript dependencies
-ARG NODE_VERSION=20.18.1
-ARG YARN_VERSION=1.22.22
-ENV PATH=/usr/local/node/bin:$PATH
-RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-    npm install -g yarn@$YARN_VERSION && \
-    rm -rf /tmp/node-build-master
+# Node.jsとYarnのセットアップ
+RUN npm install -g yarn && \
+    yarn global add esbuild tailwindcss @tailwindcss/forms && \
+    yarn config set prefix /usr/local
 
-# Install specific bundler version and application gems
+# Gemfileのコピーとインストール
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler -v 2.6.2 && \
-    bundle config set --local deployment 'true' && \
-    bundle config set --local without 'development test' && \
-    bundle install --jobs 4 --retry 3 && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
+RUN bundle install
 
-# Install node modules
+# Node.js依存関係のインストール
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
+# フォントのセットアップ
+RUN mkdir -p /usr/share/fonts/truetype/custom && \
+    chmod 755 /usr/share/fonts/truetype/custom
+
+# アプリケーションのコピー
 COPY . .
 
-# Precompile bootsnap code and assets
-RUN bundle exec bootsnap precompile app/ lib/ && \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# フォントファイルのコピーと設定
+RUN cp app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/ && \
+    chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
+    fc-cache -fv
 
-RUN rm -rf node_modules
+# アセットのプリコンパイル
+RUN SECRET_KEY_BASE=dummy bundle exec rails assets:precompile
 
-# Final stage
-FROM base
+# 最終ステージ（軽量化）
+FROM ruby:$RUBY_VERSION-slim
 
-COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
+# 本番環境の設定を引き継ぎ
+ENV RAILS_ENV="production" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_LOG_TO_STDOUT="true"
 
-# Set up rails user
-RUN groupadd --system --gid 1000 rails && \
-    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    mkdir -p db log storage tmp && \
-    chown -R rails:rails db log storage tmp
-USER 1000:1000
+WORKDIR /rails
 
-# Configure the entrypoint and command
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# 必要なパッケージのみインストール
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    default-mysql-client \
+    imagemagick \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# builderステージから必要なファイルをコピー
+COPY --from=builder /usr/share/fonts/truetype/custom /usr/share/fonts/truetype/custom
+COPY --from=builder /rails /rails
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+
+# フォントキャッシュの更新
+RUN fc-cache -fv
+
+# 権限設定
+RUN mkdir -p tmp/pids log storage/production && \
+    chmod -R 777 tmp log storage
+
+# サーバー起動設定
 EXPOSE 3000
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
