@@ -1,20 +1,19 @@
 # ベースイメージの設定
 ARG RUBY_VERSION=3.3.6
-FROM ruby:$RUBY_VERSION-slim
+FROM ruby:$RUBY_VERSION-slim as builder
 
 # 作業ディレクトリの設定
 WORKDIR /rails
 
-# 環境変数の設定
-ENV RAILS_ENV="development" \
+# 本番環境の設定
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="test" \
-    LANG=C.UTF-8 \
-    NODE_ENV="development" \
-    PATH="/usr/local/node/bin:/usr/local/bundle/bin:/usr/local/bin:${PATH}"
+    BUNDLE_WITHOUT="development:test" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_LOG_TO_STDOUT="true"
 
 # 基本パッケージのインストール
-# フォント関連のパッケージを追加
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
@@ -26,10 +25,8 @@ RUN apt-get update -qq && \
     git \
     nodejs \
     npm \
-    # 画像処理関連パッケージ
     imagemagick \
     libmagickwand-dev \
-    # フォント関連パッケージ
     fontconfig \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
@@ -48,32 +45,50 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 # フォントのセットアップ
-# フォントディレクトリの作成と権限設定を確実に
 RUN mkdir -p /usr/share/fonts/truetype/custom && \
     chmod 755 /usr/share/fonts/truetype/custom
-
-# フォントファイルのコピーと設定
-COPY app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/
-RUN chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
-    fc-cache -fv && \
-    # フォントが正しく認識されているか確認
-    fc-list | grep -i "Yomogi" || echo "Warning: Yomogi font not found in fc-list"
 
 # アプリケーションのコピー
 COPY . .
 
+# フォントファイルのコピーと設定
+RUN cp app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/ && \
+    chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
+    fc-cache -fv
+
+# アセットのプリコンパイル
+RUN SECRET_KEY_BASE=dummy bundle exec rails assets:precompile
+
+# 最終ステージ（軽量化）
+FROM ruby:$RUBY_VERSION-slim
+
+# 本番環境の設定を引き継ぎ
+ENV RAILS_ENV="production" \
+    RAILS_SERVE_STATIC_FILES="true" \
+    RAILS_LOG_TO_STDOUT="true"
+
+WORKDIR /rails
+
+# 必要なパッケージのみインストール
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    default-mysql-client \
+    imagemagick \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# builderステージから必要なファイルをコピー
+COPY --from=builder /usr/share/fonts/truetype/custom /usr/share/fonts/truetype/custom
+COPY --from=builder /rails /rails
+COPY --from=builder /usr/local/bundle /usr/local/bundle
+
+# フォントキャッシュの更新
+RUN fc-cache -fv
+
 # 権限設定
-RUN mkdir -p tmp/pids log storage/development && \
+RUN mkdir -p tmp/pids log storage/production && \
     chmod -R 777 tmp log storage
-
-# ImageMagickポリシーの設定
-# フォントへのアクセスを許可
-RUN if [ -f /etc/ImageMagick-6/policy.xml ]; then \
-    sed -i 's/<policy domain="coder" rights="none" pattern="PDF" \/>/<policy domain="coder" rights="read|write" pattern="PDF" \/>/' /etc/ImageMagick-6/policy.xml; \
-    fi
-
-# フォントの最終確認
-RUN convert -list font | grep -i "Yomogi" || echo "Warning: Yomogi font not found in ImageMagick"
 
 # サーバー起動設定
 EXPOSE 3000
