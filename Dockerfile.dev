@@ -1,32 +1,63 @@
-FROM ruby:3.3.6
+# ベースイメージを選択
+FROM ruby:3.3.6-slim
+
+# 言語と時間設定の前に、bundlerの適切なバージョンをインストール
+RUN gem install bundler -v '2.6.2'
+
+# 言語と時間設定
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
+ENV RAILS_ENV=development
 
-# Node.jsとYarnのインストール（バックスラッシュを行末に配置）
+# システムパッケージのインストール
 RUN apt-get update -qq && \
-    apt-get install -y ca-certificates curl gnupg && \
-    mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    NODE_MAJOR=20 && \
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
-    wget --quiet -O - /tmp/pubkey.gpg https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    apt-get install -y \
+    build-essential \
+    curl \
+    default-mysql-client \
+    libpq-dev \
+    libmariadb-dev-compat \
+    libmariadb-dev \
+    git \
+    nodejs \
+    npm \
+    imagemagick \
+    libmagickwand-dev \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/*
 
-# 必要なパッケージのインストール
-RUN apt-get update -qq && \
-    apt-get install -y build-essential \
-                       libssl-dev \
-                       nodejs \
-                       yarn \
-                       vim \
-                       git
+# Node.jsとYarnのインストール
+RUN npm install -g yarn
 
-# アプリケーションディレクトリの作成
-RUN mkdir /sakura-thanks
+# 作業ディレクトリ設定
 WORKDIR /sakura-thanks
 
-# Bundlerのインストール
-RUN gem install bundler
+# 環境変数とパス設定
+ENV BUNDLE_PATH=/bundle \
+    PATH=/sakura-thanks/bin:$PATH
 
-# ホストのファイルをコピー
-COPY . /sakura-thanks
+# フォントディレクトリ準備
+RUN mkdir -p /usr/share/fonts/truetype/custom && \
+    chmod 755 /usr/share/fonts/truetype/custom
+
+# Gemfileのコピーとインストール
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+# Node.js依存関係のインストール
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# フォントファイルのセットアップ
+COPY app/assets/fonts/Yomogi-Regular.ttf /usr/share/fonts/truetype/custom/
+RUN chmod 644 /usr/share/fonts/truetype/custom/Yomogi-Regular.ttf && \
+    fc-cache -fv
+
+# アプリケーションコードのコピー
+COPY . .
+
+# ポートを公開
+EXPOSE 3000
+
+# デフォルトコマンド
+CMD ["./bin/dev"]
