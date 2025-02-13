@@ -9,18 +9,24 @@ class Post < ApplicationRecord
 
   # variant定義を追加
   def preview_with_text
+    Rails.logger.debug "Called preview_with_text"
     return image unless image.attached? && overlay_text.present?
-    image.variant(
-    resize_to_limit: [ 800, 800 ],
-    # フォントパスを修正
-    # 一時的にDejaVu Sansを使用（デフォルトで利用可能）
-    font: "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    fill: "white",
-    stroke: "#000000",
-    strokewidth: "2",
-    gravity: "northwest",
-    draw: "text #{text_x_position + 20},#{text_y_position + 20} '#{overlay_text}'"
-  )
+  
+    begin
+      image.variant(
+        resize_to_limit: [800, 800],
+        font: "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf",
+        fill: "white",
+        stroke: "#000000",
+        strokewidth: "2",
+        gravity: "northwest",
+        draw: "text #{text_x_position + 20},#{text_y_position + 20} '#{overlay_text}'"
+      )
+    rescue => e
+      Rails.logger.error "画像処理エラー: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      image  # エラー時は元の画像を返す
+    end
   end
 
   # 表示用のメソッドも同様に修正

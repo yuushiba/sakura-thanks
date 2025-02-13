@@ -14,22 +14,20 @@
       
   <%# 画像プレビュー部分 %>
   <div data-controller="image-text" class="relative">
-  <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden" style="background-color: #D9D9D9 !important; min-height: 200px;">
-    <% if post.persisted? && post.image.attached? %>
-      <%= image_tag post.preview_with_text, class: "w-full h-full object-cover" %>
-    <% else %>
-      <div class="w-1/2 h-1/2 flex items-center justify-center">
-        <span class="text-gray-600">画像を選択してください</span>
-      </div>
-    <% end %>
+  <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden relative" style="background-color: #D9D9D9 !important; min-height: 200px;">
+    <%= image_tag post.preview_with_text, class: "w-full h-full object-cover" if post.image.attached? %>
   </div>
 
-  <%# プレビュー用のオーバーレイテキスト - 編集時のみ表示 %>
-  <% if post.overlay_text.present? %>
-    <div data-image-text-target="textPreview" class="hidden">
-      <%= post.overlay_text %>
-    </div>
-  <% end %>
+  <%= f.text_field :overlay_text, 
+    class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+    placeholder: "文字を入力してください",
+    data: { 
+      "image-text-target": "input",
+      action: "input->image-text#updatePreview"
+    } %>
+
+  <%= f.hidden_field :text_x_position, data: { "image-text-target": "xPosition" } %>
+  <%= f.hidden_field :text_y_position, data: { "image-text-target": "yPosition" } %>
 </div>
       
      <div>
