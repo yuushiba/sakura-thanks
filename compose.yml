@@ -32,7 +32,7 @@ services:
       - log-data:/sakura-thanks/log
     environment:
       TZ: Asia/Tokyo
-      RAILS_ENV: ${RAILS_ENV:-development}  # 環境変数RAILS_ENVが設定されていない場合はdevelopmentを使用
+      RAILS_ENV: ${RAILS_ENV:-development}  # 環境変数RAILS_ENVが設定されていない場合はdevelopment使用
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: password
       MYSQL_HOST: db
