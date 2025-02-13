@@ -5,11 +5,9 @@ FROM ruby:$RUBY_VERSION-slim as builder
 # 作業ディレクトリの設定
 WORKDIR /rails
 
-# 本番環境の設定
+# 環境変数の設定
 ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development:test" \
     RAILS_SERVE_STATIC_FILES="true" \
     RAILS_LOG_TO_STDOUT="true"
 
@@ -36,9 +34,11 @@ RUN npm install -g yarn && \
     yarn global add esbuild tailwindcss @tailwindcss/forms && \
     yarn config set prefix /usr/local
 
-# Gemfileのコピーとインストール
+# Gemfileのコピーとインストール（修正）
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle config set --local deployment 'true' && \
+    bundle config set --local without 'development test' && \
+    bundle install
 
 # Node.js依存関係のインストール
 COPY package.json yarn.lock ./
@@ -62,19 +62,22 @@ RUN SECRET_KEY_BASE=dummy bundle exec rails assets:precompile
 # 最終ステージ（軽量化）
 FROM ruby:$RUBY_VERSION-slim
 
-# 本番環境の設定を引き継ぎ
+# 環境変数の設定（統一）
 ENV RAILS_ENV="production" \
+    BUNDLE_PATH="/usr/local/bundle" \
     RAILS_SERVE_STATIC_FILES="true" \
-    RAILS_LOG_TO_STDOUT="true"
+    RAILS_LOG_TO_STDOUT="true" \
+    BUNDLE_WITHOUT="development:test"
 
 WORKDIR /rails
 
-# 必要なパッケージのみインストール
+# 必要なパッケージのみインストール（nodejs追加）
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     default-mysql-client \
     imagemagick \
     fontconfig \
+    nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
