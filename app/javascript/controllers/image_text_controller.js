@@ -2,51 +2,38 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "xPosition", "yPosition", "preview"]
+  static targets = ["input", "xPosition", "yPosition"]
   
   connect() {
-    // 初期設定
     if (this.hasInputTarget && this.inputTarget.value) {
       this.updatePreview()
     }
   }
 
   updatePreview() {
-    const text = this.inputTarget.value
-    const x = parseInt(this.xPositionTarget.value || 0)
-    const y = parseInt(this.yPositionTarget.value || 0)
-    
-    this.clearExistingText()
-    if (text) {
-      this.renderPreviewText(text, x, y)
+    // プレビューの更新は不要になったので、
+    // 位置の値だけを更新して自動的にサーバーサイドでプレビューを生成
+    const form = this.element.closest('form')
+    if (form) {
+      Rails.fire(form, 'submit')
     }
   }
 
-  clearExistingText() {
-    const existingText = this.element.querySelector('.overlay-text')
-    if (existingText) {
-      existingText.remove()
-    }
+  moveUp() {
+    this.move(0, -20)  // 移動幅を大きく
   }
 
-  renderPreviewText(text, x, y) {
-    const imagePreview = this.element.querySelector('#image-preview')
-    const previewText = document.createElement('div')
-    previewText.className = 'overlay-text absolute text-white text-2xl font-bold break-words max-w-[80%]'
-    previewText.style.cssText = `
-      left: ${x + 20}px;
-      top: ${y + 20}px;
-      text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.8);
-      font-family: "Yomogi", sans-serif;
-    `
-    previewText.textContent = text
-    imagePreview.appendChild(previewText)
+  moveDown() {
+    this.move(0, 20)
   }
 
-  moveUp() { this.move(0, -10) }
-  moveDown() { this.move(0, 10) }
-  moveLeft() { this.move(-10, 0) }
-  moveRight() { this.move(10, 0) }
+  moveLeft() {
+    this.move(-20, 0)
+  }
+
+  moveRight() {
+    this.move(20, 0)
+  }
 
   move(dx, dy) {
     const x = parseInt(this.xPositionTarget.value || 0) + dx
