@@ -52,21 +52,24 @@ export default class extends Controller {
     const text = this.inputTarget.value
     if (text) {
       const textOverlay = document.createElement('div')
-      textOverlay.className = 'overlay-text absolute text-white text-6xl font-bold'
-      textOverlay.style.cssText = `
+      textOverlay.className = 'overlay-text absolute text-white text-6xl'
+      // cssTextからtext-shadowを削除（CSSクラスで管理）
+        textOverlay.style.cssText = `
         left: ${this.currentX}px;
         top: ${this.currentY}px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        font-family: "Yomogi", sans-serif;
+        position: absolute;
+        transform-origin: left top; // 位置合わせの基準点を設定
       `
-      textOverlay.textContent = text
-      overlayContainer.appendChild(textOverlay)
-    }
+        // 編集中フラグの追加
+        textOverlay.classList.add('editing');
+        
+        textOverlay.textContent = text
+        overlayContainer.appendChild(textOverlay)
+      }
   }
 
   moveUp(event)  {
     event.preventDefault();
-    console.log("Moving up from", this.currentY);
     this.currentY -= 20;
     this.updatePosition();
   }

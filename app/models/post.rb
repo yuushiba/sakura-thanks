@@ -15,9 +15,13 @@ class Post < ApplicationRecord
       resize_to_limit: [800, 800],
       font: "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf",
       fill: "white",                  # 文字色を白に
-      pointsize: "60",                # 文字サイズを大きく
+      pointsize: "64",                # 文字サイズを大きく
       gravity: "northwest",
-      draw: "text #{text_x_position + 20},#{text_y_position + 20} '#{overlay_text}'"
+       # 影を追加
+      draw: [
+        "fill black text #{text_x_position + 2},#{text_y_position + 66} '#{overlay_text}'", # 影
+        "fill white text #{text_x_position},#{text_y_position + 64} '#{overlay_text}'"      # メインテキスト
+      ].join(' ')
     )
   end
 
