@@ -6,6 +6,17 @@
   .custom-text {
     color: #FFFFFF !important;
   }
+  /* テキストオーバーレイの共通スタイル */
+  .overlay-text {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    font-family: 'YOMOGI', sans-serif;
+  }
+  
+  /* 編集中のテキストの追加スタイル */
+  .overlay-text.editing {
+    outline: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
 }
 
 /* app/assets/stylesheets/application.tailwind.css */

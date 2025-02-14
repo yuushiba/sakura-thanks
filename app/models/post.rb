@@ -10,17 +10,32 @@ class Post < ApplicationRecord
   # variant定義を追加
   def preview_with_text
     return image unless image.attached? && overlay_text.present?
+
+    # 座標の補正係数を調整
+    x_adjustment = 1.28  # 460 / 360 ≈ 1.28
+    y_adjustment = 1.25  # 400 / 320 ≈ 1.25
+
+    # 補正後の座標を計算
+    adjusted_x = (text_x_position * x_adjustment).to_i
+    adjusted_y = (text_y_position * y_adjustment).to_i
+
+    # デバッグログ
+    Rails.logger.debug "Original position: (#{text_x_position}, #{text_y_position})"
+    Rails.logger.debug "Adjusted position: (#{adjusted_x}, #{adjusted_y})"
+
     image.variant(
-    resize_to_limit: [ 800, 800 ],
-    # フォントパスを修正
-    # 一時的にDejaVu Sansを使用（デフォルトで利用可能）
-    font: "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-    fill: "white",
-    stroke: "#000000",
-    strokewidth: "2",
-    gravity: "northwest",
-    draw: "text #{text_x_position + 20},#{text_y_position + 20} '#{overlay_text}'"
-  )
+      resize_to_limit: [ 800, 800 ],
+      font: "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf",
+      fill: "white",
+      pointsize: "64",
+      gravity: "northwest",
+      draw: [
+        # 影（補正された座標を使用）
+        "fill rgba(0,0,0,0.5) text #{adjusted_x + 2},#{adjusted_y + 2} '#{overlay_text}'",
+        # メインテキスト（補正された座標を使用）
+        "fill white text #{adjusted_x},#{adjusted_y} '#{overlay_text}'"
+      ].join(" ")
+    )
   end
 
   # 表示用のメソッドも同様に修正
@@ -92,6 +107,16 @@ class Post < ApplicationRecord
     }
   rescue => e
     { error: e.message }
+  end
+
+  def debug_image_dimensions
+    return unless image.attached?
+
+    variant = image.variant(resize_to_limit: [ 800, 800 ])
+    metadata = variant.processed.metadata
+
+    Rails.logger.debug "Image dimensions: #{metadata['width']}x#{metadata['height']}"
+    Rails.logger.debug "Display dimensions: 800x800"
   end
 
   # 新しいカラムのバリデーション
