@@ -10,7 +10,6 @@
   .overlay-text {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     font-family: 'YOMOGI', sans-serif;
-    -webkit-text-stroke: 1px #000; /* テキストの輪郭を追加 */
   }
   
   /* 編集中のテキストの追加スタイル */

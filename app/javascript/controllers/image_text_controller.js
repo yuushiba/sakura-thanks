@@ -93,12 +93,23 @@ export default class extends Controller {
   }
 
   updatePosition() {
-    console.log("Updating position", {
+    console.log("Browser coordinates:", {
       x: this.currentX,
-      y: this.currentY
+      y: this.currentY,
+      scale: window.devicePixelRatio
     });
-    this.xPositionTarget.value = this.currentX;
-    this.yPositionTarget.value = this.currentY;
+    
+    // 座標の補正を追加
+    const adjustedX = this.currentX;
+    const adjustedY = this.currentY;
+    
+    console.log("Adjusted coordinates:", {
+      x: adjustedX,
+      y: adjustedY
+    });
+  
+    this.xPositionTarget.value = adjustedX;
+    this.yPositionTarget.value = adjustedY;
     this.updatePreview();
   }
 }
