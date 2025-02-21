@@ -1,0 +1,17 @@
+<div class="max-w-md mx-auto mt-8">
+  <h1 class="text-2xl font-bold mb-4">パスワードリセット</h1>
+
+  <%= form_with model: @user, url: password_reset_path(@token), method: :patch, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :password, '新しいパスワード', class: 'block mb-2' %>
+      <%= f.password_field :password, class: 'w-full p-2 border rounded' %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :password_confirmation, 'パスワード確認', class: 'block mb-2' %>
+      <%= f.password_field :password_confirmation, class: 'w-full p-2 border rounded' %>
+    </div>
+
+    <%= f.submit '更新', class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600' %>
+  <% end %>
+</div>
