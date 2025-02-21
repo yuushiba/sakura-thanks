@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   post "oauth/callback" => "oauths#callback"
   get "oauth/callback" => "oauths#callback"
   get "oauth/:provider" => "oauths#oauth", :as => :auth_at_provider
+  resources :password_resets, only: %i[new create edit update]
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

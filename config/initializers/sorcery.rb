@@ -4,7 +4,7 @@
 # Available submodules are: :user_activation, :http_basic_auth, :remember_me,
 # :reset_password, :session_timeout, :brute_force_protection, :activity_logging,
 # :magic_login, :external
-Rails.application.config.sorcery.submodules = [ :external ] # 外部認証を有効化
+Rails.application.config.sorcery.submodules = [ :reset_password, :external ]
 
 # Here you can configure each submodule's features.
 Rails.application.config.sorcery.configure do |config|
@@ -157,7 +157,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.auth0.secret = ""
   # config.auth0.callback_url = "https://0.0.0.0:3000/oauth/callback?provider=auth0"
   # config.auth0.site = "https://example.auth0.com"
-
+  #
   config.google.key = Rails.application.credentials.dig(:google, :client_id)
   config.google.secret = Rails.application.credentials.dig(:google, :client_secret)
   config.google.callback_url = if Rails.env.production?
@@ -169,7 +169,6 @@ Rails.application.config.sorcery.configure do |config|
     email: "email",
     name: "name"
   }
-
   #
   # For Microsoft Graph, the key will be your App ID, and the secret will be your app password/public key.
   # The callback URL "can't contain a query string or invalid special characters"
@@ -233,6 +232,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.bot_prompt = "normal"
   # config.line.user_info_mapping = {name: 'displayName'}
 
+
   # For information about Discord API
   # https://discordapp.com/developers/docs/topics/oauth2
   # config.discord.key = "xxxxxx"
@@ -249,7 +249,6 @@ Rails.application.config.sorcery.configure do |config|
   # config.battlenet.scope = "openid"
   # --- user config ---
   config.user_config do |user|
-    user.authentications_class = Authentication
     # -- core --
     # Specify username attributes, for example: [:username, :email].
     # Default: `[:email]`
@@ -409,7 +408,7 @@ Rails.application.config.sorcery.configure do |config|
     # Password reset mailer class.
     # Default: `nil`
     #
-    # user.reset_password_mailer =
+    user.reset_password_mailer = UserMailer
 
     # Reset password email method on your mailer class.
     # Default: `:reset_password_email`
@@ -431,7 +430,7 @@ Rails.application.config.sorcery.configure do |config|
     # Hammering protection: how long in seconds to wait before allowing another email to be sent.
     # Default: `5 * 60`
     #
-    # user.reset_password_time_between_emails =
+    user.reset_password_time_between_emails = 1
 
     # Access counter to a reset password page attribute name
     # Default: `:access_count_to_reset_password_page`
@@ -550,7 +549,7 @@ Rails.application.config.sorcery.configure do |config|
     # Class which holds the various external provider data for this user.
     # Default: `nil`
     #
-    # user.authentications_class =
+    user.authentications_class = Authentication
 
     # User's identifier in the `authentications` class.
     # Default: `:user_id`

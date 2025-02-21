@@ -1,0 +1,22 @@
+<div class="container mx-auto max-w-xl px-4 py-8">
+  <h1 style="color: #073472;" class="text-2xl font-bold text-center mb-8">パスワードリセット申請</h1>
+
+  <%= form_with url: password_resets_path, local: true do |f| %>
+    <div class="space-y-6">
+      <div class="mx-auto w-3/5">
+        <%= f.label :email, 'メールアドレス', class: "block mb-2", style: "color: #073472;" %>
+        <%= f.email_field :email, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
+      </div>
+
+      <div class="text-center mt-8">
+        <%= f.submit '送信', class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="text-center mt-8">
+    <div>
+      <%= link_to "ログインページに戻る", login_path, style: "color: #073472;" %>
+    </div>
+  </div>
+</div>
