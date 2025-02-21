@@ -1,5 +1,6 @@
-<div class="max-w-md mx-auto mt-8">
-  <h1 class="text-2xl font-bold mb-4">パスワードリセット</h1>
+<div class="min-h-screen bg-base-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-center mb-8" style="color: #073472;">パスワードリセット申請</h1>
 
   <%= form_with model: @user, url: password_reset_path(@token), method: :patch, local: true do |f| %>
     <div class="mb-4">
