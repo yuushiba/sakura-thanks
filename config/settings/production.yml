@@ -1,0 +1,4 @@
+mailer:
+  default_url_options:
+    host: "sakura-thanks.com"
+    protocol: "https"

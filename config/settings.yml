@@ -1,0 +1,7 @@
+mailer:
+  from_address: "noreply.sakurathanks@gmail.com"  # デフォルトの送信元アドレス
+  smtp:
+    address: "smtp.gmail.com"
+    port: 587
+    authentication: "plain"
+    enable_starttls_auto: true
