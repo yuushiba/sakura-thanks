@@ -10,10 +10,18 @@
       <% end %>
     </div>
 
-    <div class="text-center mt-8">
+    <div class="text-center mt-8 flex justify-center gap-4">
       <%= link_to "新規投稿をする", new_post_path, 
           class: "btn custom-text border-none hover:opacity-80", 
           style: "background-color: #DD7594;" %>
+          
+      <a href="https://twitter.com/intent/tweet?url=<%= CGI.escape(root_url) %>&text=<%= CGI.escape('Sakura Thanksで感謝の気持ちを伝えています！') %>" 
+        target="_blank" 
+        rel="noopener" 
+        class="btn custom-text border-none hover:opacity-80"
+        style="background-color: #4981CF;">
+        Xでシェアする
+      </a>
     </div>
   </div>
 </div>

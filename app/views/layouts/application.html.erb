@@ -7,6 +7,17 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- 基本的なOGPタグ -->
+    <meta property="og:title" content="<%= content_for(:og_title) || "Sakura Thanks" %>">
+    <meta property="og:description" content="<%= content_for(:og_description) || "思い出の桜写真で大切な人に感謝を伝えよう" %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:image" content="<%= content_for(:og_image) || asset_url("default_og_image.jpg") %>">
+    
+    <!-- X (Twitter) 用メタタグ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yuichi_57">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <%= yield :head %>
 
