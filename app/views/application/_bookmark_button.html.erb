@@ -1,0 +1,15 @@
+<% if current_user && current_user.bookmark?(post) %>
+  <%= link_to bookmark_path(current_user.bookmarks.find_by(post_id: post.id)), 
+      data: { turbo_method: :delete }, 
+      style: "color: #DD7594;", 
+      class: "hover:opacity-80" do %>
+    <i class="fas fa-heart"></i>
+  <% end %>
+<% else %>
+  <%= link_to bookmarks_path(post_id: post.id), 
+      data: { turbo_method: :post }, 
+      class: "text-gray-400 hover:opacity-80", 
+      style: "hover:color: #DD7594;" do %>
+    <i class="far fa-heart"></i>
+  <% end %>
+<% end %>

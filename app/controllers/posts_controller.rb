@@ -63,6 +63,11 @@ class PostsController < ApplicationController
     redirect_to mypage_path
   end
 
+  def bookmarks
+    @bookmark_posts = current_user.bookmark_posts.includes(:user).order(created_at: :desc)
+    render 'posts/bookmarks'
+  end
+
 private
 
   def post_params

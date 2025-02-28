@@ -10,6 +10,7 @@
         <%= link_to "一覧ページ", posts_path, class: "custom-text hover:opacity-80" %>
         <% if logged_in? %>
           <%= link_to "マイページ", mypage_path, class: "custom-text hover:opacity-80" %>
+          <%= link_to "お気に入り", bookmarks_posts_path, class: "custom-text hover:opacity-80" %>
           <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "custom-text hover:opacity-80" %>
         <% else %>
           <%= link_to "ログイン", login_path, class: "custom-text hover:opacity-80" %>
