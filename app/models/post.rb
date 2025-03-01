@@ -3,7 +3,7 @@ class Post < ApplicationRecord
   # 関連付け
   belongs_to :user
   has_many :comments, dependent: :destroy
-  has_many :favorites, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
   # Active Storageの関連付けを追加
   has_one_attached :image
 
