@@ -15,7 +15,7 @@
       <%# コンテンツ部分 %>
       <div class="bg-white rounded-lg shadow-lg overflow-hidden relative"> <!-- relative を追加 -->
         <!-- ブックマークボタンを右上に配置 -->
-        <div class="absolute top-3 right-3">
+        <div class="absolute top-3 right-3 z-10" style="position: absolute; top: 20px; right: 20px;">
           <%= render 'application/bookmark_button', post: @post %>
         </div>
         

@@ -1,7 +1,9 @@
 <div class="fixed top-4 left-1/2 transform -translate-x-1/2">
   <% flash.each do |type, message| %>
-    <div class="alert w-80 text-sm <%= type_to_alert_class(type) %> shadow-lg">
-      <%= message %>
-    </div>
+    <% if message.is_a?(String) && type != "status" %> <!-- 文字列かつstatusでない場合のみ表示 -->
+      <div class="alert w-80 text-sm <%= type_to_alert_class(type) %> shadow-lg">
+        <%= message %>
+      </div>
+    <% end %>
   <% end %>
 </div>
