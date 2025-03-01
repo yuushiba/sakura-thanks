@@ -1,22 +1,26 @@
-<%# app/views/posts/_post.html.erb %>
 <div class="h-full">
-  <div class="bg-white rounded-lg shadow-lg h-32">
+  <div class="bg-white rounded-lg shadow-lg h-32 relative"> <!-- relative を追加 -->
+    <!-- ブックマークボタンを絶対位置で右上に配置 -->
+    <div class="absolute top-2 right-2 z-10" style="position: absolute; top: 15px; right: 15px;">
+      <%= render 'application/bookmark_button', post: post %>
+    </div>
+    
     <div class="flex h-full p-4">
       <%# 左側の画像部分 %>
       <div class="w-1/4 pr-4">
         <%= link_to post_path(post), class: "hover:opacity-80" do %>
-<% if post.image.attached? %>
-  <% if post.overlay_text.present? %>
-    <%= image_tag post.image_with_text,
-        class: "w-full h-full object-cover rounded-lg" %>
-  <% else %>
-    <%= image_tag post.image,
-        class: "w-full h-full object-cover rounded-lg" %>
-  <% end %>
-<% else %>
-  <%= image_tag "Cropped_Image copy.png",
-      class: "w-full h-full object-cover rounded-lg" %>
-<% end %>
+          <% if post.image.attached? %>
+            <% if post.overlay_text.present? %>
+              <%= image_tag post.image_with_text,
+                  class: "w-full h-full object-cover rounded-lg" %>
+            <% else %>
+              <%= image_tag post.image,
+                  class: "w-full h-full object-cover rounded-lg" %>
+            <% end %>
+          <% else %>
+            <%= image_tag "Cropped_Image copy.png",
+                class: "w-full h-full object-cover rounded-lg" %>
+          <% end %>
         <% end %>
       </div>
 

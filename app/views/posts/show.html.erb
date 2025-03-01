@@ -13,30 +13,32 @@
       </div>
 
       <%# コンテンツ部分 %>
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden relative"> <!-- relative を追加 -->
+        <!-- ブックマークボタンを右上に配置 -->
+        <div class="absolute top-3 right-3 z-10" style="position: absolute; top: 20px; right: 20px;">
+          <%= render 'application/bookmark_button', post: @post %>
+        </div>
+        
         <div class="p-6">
-          <%# タイトルとボタンを同じ行に配置 %>
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold" style="color: #000000;">
-              <%= @post.title %>
-            </h2>
-            
-            <% if current_user&.id == @post.user_id %>
-              <div class="flex items-center gap-4"> <!-- gap-2 から gap-4 に変更 -->
-                <%= link_to edit_post_path(@post), 
-                    class: "btn custom-text border-none hover:opacity-80", 
-                    style: "background-color: #DD7594;" do %>
-                  編集する
-                <% end %>
-                
-                <%= button_to '削除する', post_path(@post), 
-                    method: :delete, 
-                    class: 'btn custom-text border-none hover:opacity-80',
-                    style: "background-color: #D9D9D9;",
-                    data: { turbo_confirm: '投稿を削除してもよろしいですか？' } %>
-              </div>
-            <% end %>
-          </div>
+          <h2 class="text-xl font-bold mb-4" style="color: #000000;">
+            <%= @post.title %>
+          </h2>
+          
+          <% if current_user&.id == @post.user_id %>
+            <div class="flex items-center gap-4 mb-4">
+              <%= link_to edit_post_path(@post), 
+                  class: "btn custom-text border-none hover:opacity-80", 
+                  style: "background-color: #DD7594;" do %>
+                編集する
+              <% end %>
+              
+              <%= button_to '削除する', post_path(@post), 
+                  method: :delete, 
+                  class: 'btn custom-text border-none hover:opacity-80',
+                  style: "background-color: #D9D9D9;",
+                  data: { turbo_confirm: '投稿を削除してもよろしいですか？' } %>
+            </div>
+          <% end %>
           
           <p class="mb-4" style="color: #000000;">
             <%= @post.content %>
@@ -49,6 +51,7 @@
           </div>
         </div>
       </div>
+      
       <%# コメント一覧 %>
       <div class="mt-8">
         <h3 class="text-xl font-bold mb-4" style="color: #073472;">コメント</h3>
@@ -64,8 +67,7 @@
 
       <%# 戻るボタン %>
       <div class="text-center mt-8">
-        <%= link_to "戻る", :back, 
-            class: "btn btn-neutral" %>
+        <%= link_to "戻る", :back, class: "btn btn-neutral" %>
       </div>
     </div>
   </div>
