@@ -48,7 +48,7 @@
       <label class="block text-sm font-medium mb-2" style="color: #073472;">画像に入れたい文字(任意)</label>
       <%= f.text_field :overlay_text, 
           class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
-          placeholder: "画像に表示する文字を入力",
+          placeholder: "画像に表示する文字を入力（20文字以内）",
           data: { 
             "image-text-target": "input",
             action: "input->image-text#updatePreview"
