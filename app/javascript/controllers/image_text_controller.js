@@ -88,7 +88,7 @@ export default class extends Controller {
       const textOverlay = document.createElement('div');
       
       // デバイスに合わせてテキストサイズを調整（スマホではさらに小さく）
-      const textSizeClass = isMobile ? 'text-xl' : 'text-6xl'; // モバイルではより小さいサイズに調整
+      const textSizeClass = isMobile ? 'text-lg' : 'text-5xl'; // text-6xl から text-5xl へ縮小
       textOverlay.className = `overlay-text absolute text-white ${textSizeClass}`;
       
       // テキスト表示のスタイル設定
@@ -157,13 +157,20 @@ export default class extends Controller {
       this.updatePreview();
       return;
     }
-
+  
     // PC版の場合、Y軸の位置を調整（調査結果から得られたずれを補正）
+    let adjustedCurrentX = this.currentX;
     let adjustedCurrentY = this.currentY;
+    
     if (!isMobile && this.currentY > 0) {
       // 実測値に基づいて120pxに変更
       const yOffset = 120; // 調査結果から得られた値を更新
       adjustedCurrentY = Math.max(0, this.currentY - yOffset);
+    } else if (isMobile) {
+      // モバイル向けの位置オフセット（実測値に基づく）
+      // ここで1回だけ適用する
+      adjustedCurrentX = Math.max(0, this.currentX - 20); // X座標を左に20px調整（ただし0未満にはしない）
+      adjustedCurrentY = Math.max(0, this.currentY - 40); // Y座標を上に40px調整（ただし0未満にはしない）
     }
     
     // プレビュー画像のサイズを取得
@@ -181,17 +188,18 @@ export default class extends Controller {
     // デバイスによって補正係数を調整
     if (isMobile) {
       // モバイル向けの補正を実験結果に基づいて逆方向に調整
-      xScale = xScale * 0.9; // 係数を10%減らす
-      yScale = yScale * 0.9; // Y軸も同様に調整
+      xScale = xScale * 0.85; // 0.9から0.85へ変更
+      yScale = yScale * 0.85; // 0.9から0.85へ変更
     }
     
-    // 補正後の座標を計算（PCの場合は調整後のY座標を使用）
-    const adjustedX = Math.round(this.currentX * xScale);
-    const adjustedY = Math.round((isMobile ? this.currentY : adjustedCurrentY) * yScale);
+    // 補正後の座標を計算
+    const adjustedX = Math.round(adjustedCurrentX * xScale); // 調整済みのX座標を使用
+    const adjustedY = Math.round(adjustedCurrentY * yScale); // 調整済みのY座標を使用
     
     console.log("座標情報:", {
       元のX: this.currentX,
       元のY: this.currentY,
+      調整後X: adjustedCurrentX,
       調整後Y: adjustedCurrentY,
       補正後X: adjustedX,
       補正後Y: adjustedY,
