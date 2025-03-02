@@ -11,17 +11,11 @@ class Post < ApplicationRecord
   def preview_with_text
     return image unless image.attached? && overlay_text.present?
 
-    # 座標の補正係数を調整
-    x_adjustment = 1.28  # 460 / 360 ≈ 1.28
-    y_adjustment = 1.25  # 400 / 320 ≈ 1.25
-
-    # 補正後の座標を計算
-    adjusted_x = (text_x_position * x_adjustment).to_i
-    adjusted_y = (text_y_position * y_adjustment).to_i
+    adjusted_x = text_x_position
+    adjusted_y = text_y_position
 
     # デバッグログ
-    Rails.logger.debug "Original position: (#{text_x_position}, #{text_y_position})"
-    Rails.logger.debug "Adjusted position: (#{adjusted_x}, #{adjusted_y})"
+    Rails.logger.debug "Using position: (#{adjusted_x}, #{adjusted_y})"
 
     image.variant(
       resize_to_limit: [ 800, 800 ],
@@ -30,9 +24,9 @@ class Post < ApplicationRecord
       pointsize: "64",
       gravity: "northwest",
       draw: [
-        # 影（補正された座標を使用）
+        # 影
         "fill rgba(0,0,0,0.5) text #{adjusted_x + 2},#{adjusted_y + 2} '#{overlay_text}'",
-        # メインテキスト（補正された座標を使用）
+        # メインテキスト
         "fill white text #{adjusted_x},#{adjusted_y} '#{overlay_text}'"
       ].join(" ")
     )
@@ -122,7 +116,7 @@ class Post < ApplicationRecord
   # 新しいカラムのバリデーション
   validates :text_x_position, numericality: { only_integer: true }, allow_nil: true
   validates :text_y_position, numericality: { only_integer: true }, allow_nil: true
-  validates :overlay_text, length: { maximum: 50 }
+  validates :overlay_text, length: { maximum: 20 }
 
   private
 
