@@ -114,7 +114,7 @@ class Post < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["title", "content", "created_at", "id", "user_id", "overlay_text"]
+    [ "title", "content", "created_at", "id", "user_id", "overlay_text" ]
   end
 
   # 新しいカラムのバリデーション
