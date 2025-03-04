@@ -1,0 +1,10 @@
+<%= search_form_for q, url: url do |f| %>
+  <div class="relative w-full max-w-lg mx-auto mb-6">
+    <%= f.search_field :title_cont, 
+                       class: 'w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary', 
+                       placeholder: '投稿のタイトルで検索' %>
+    <%= f.button type: 'submit', class: 'absolute right-2 top-2 btn btn-primary btn-sm text-primary-content' do %>
+      検索
+    <% end %>
+  </div>
+<% end %>

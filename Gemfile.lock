@@ -114,7 +114,7 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     coderay (1.1.3)
-    concurrent-ruby (1.3.4)
+    concurrent-ruby (1.3.5)
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
@@ -146,7 +146,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
-    i18n (1.14.6)
+    i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
       mini_magick (>= 4.9.5, < 5)
@@ -176,7 +176,7 @@ GEM
       letter_opener (~> 1.7)
       railties (>= 5.2)
       rexml
-    logger (1.6.5)
+    logger (1.6.6)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -290,7 +290,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    ransack (3.2.1)
+    ransack (4.3.0)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
@@ -411,7 +411,7 @@ DEPENDENCIES
   pry-byebug
   puma (>= 5.0)
   rails (~> 7.2.2, >= 7.2.2.1)
-  ransack (= 3.2.1)
+  ransack
   rubocop-rails-omakase
   selenium-webdriver
   sorcery (= 0.16.3)
