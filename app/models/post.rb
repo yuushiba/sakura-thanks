@@ -113,6 +113,10 @@ class Post < ApplicationRecord
     Rails.logger.debug "Display dimensions: 800x800"
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    [ "title", "content", "created_at", "id", "user_id", "overlay_text" ]
+  end
+
   # 新しいカラムのバリデーション
   validates :text_x_position, numericality: { only_integer: true }, allow_nil: true
   validates :text_y_position, numericality: { only_integer: true }, allow_nil: true
