@@ -5,6 +5,12 @@ class PostsController < ApplicationController
     @posts = @q.result(distinct: true).includes(:user).order(created_at: :desc)
   end
 
+  def autocomplete
+    @posts = Post.ransack(title_cont: params[:term]).result(distinct: true).limit(10)
+    result = @posts.map { |post| { id: post.id, value: post.title } }
+    render json: result
+  end
+
   def new
     @post = Post.new
   end

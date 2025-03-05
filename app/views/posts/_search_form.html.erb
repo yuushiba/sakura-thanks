@@ -1,10 +1,15 @@
-<%= search_form_for q, url: url do |f| %>
-  <div class="relative w-full max-w-lg mx-auto mb-6">
+<div data-controller="autocomplete" class="relative w-full max-w-lg mx-auto mb-6">
+  <%= search_form_for q, url: url do |f| %>
     <%= f.search_field :title_cont, 
-                       class: 'w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary', 
-                       placeholder: '投稿のタイトルで検索' %>
+                     class: 'w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary', 
+                     placeholder: '投稿のタイトルで検索',
+                     data: { autocomplete_target: "input" } %>
     <%= f.button type: 'submit', class: 'absolute right-2 top-2 btn btn-primary btn-sm text-primary-content' do %>
       検索
     <% end %>
-  </div>
-<% end %>
+    
+    <div data-autocomplete-target="results" class="absolute z-10 w-full bg-white mt-1 rounded-md shadow-lg border border-gray-200 max-h-60 overflow-y-auto">
+      <!-- ここに検索結果を動的に表示 -->
+    </div>
+  <% end %>
+</div>
