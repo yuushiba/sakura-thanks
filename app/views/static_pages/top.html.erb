@@ -1,14 +1,46 @@
 <div class="min-h-[calc(100vh-8rem)] container mx-auto px-4 py-8">
   <div class="text-center max-w-4xl mx-auto">
     <div class="mb-8">
-      <%= image_tag "346b73ecd76ad3608a6b67470d7b86dd.jpg", alt: "桜の風景", class: "w-full rounded-lg shadow-lg" %>
+      <%= image_tag "top_image.jpg", alt: "桜の風景", class: "w-full rounded-lg shadow-lg" %>
     </div>
     <h2 style="color: #073472;" class="text-2xl font-semibold mb-4">
      思い出の<span style="color: #DD7594;">桜</span>写真で大切な人に<span style="color: #DD7594;">感謝</span>を伝えよう
     </h2>
-    <!-- アプリの使い方ボタンを追加 -->
-    <div class="mb-8">
-    <%= link_to "アプリの使い方", "#", class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
+    
+          
+
+         <!-- アコーディオンメニューの実装 -->
+         <div class="max-w-2xl mx-auto mb-8">
+         <details class="rounded overflow-hidden">
+           <summary class="p-4 text-xl font-medium text-white cursor-pointer" style="background-color: #4981CF;">
+             アプリの使い方
+           </summary>
+           <div class="p-4 bg-white border border-gray-200">
+             <div class="pt-4 text-left">
+               <h3 class="font-bold text-lg mb-2">ログイン前にできること</h3>
+               <ul class="list-disc list-inside mb-4 ml-2">
+                 <li>投稿の閲覧</li>
+                 <li>アカウント登録</li>
+               </ul>
+
+
+          <h3 class="font-bold text-lg mb-2">ログイン後にできること</h3>
+          <ul class="list-disc list-inside mb-4 ml-2">
+            <li>桜の写真の投稿</li>
+            <li>感謝のメッセージの作成</li>
+            <li>自分の投稿の編集・削除</li>
+            <li>他のユーザーの投稿へのコメント</li>
+          </ul>
+          
+          <h3 class="font-bold text-lg mb-2">使い方の流れ</h3>
+          <ol class="list-decimal list-inside ml-2">
+            <li>桜の写真をアップロードする</li>
+            <li>感謝を伝えたい相手へのメッセージを書く</li>
+            <li>投稿をシェアして感謝の気持ちを伝える</li>
+          </ol>
+        </div>
+      </div>
+      </details>
     </div>
   
     <div class="flex justify-center gap-8 mt-8">
