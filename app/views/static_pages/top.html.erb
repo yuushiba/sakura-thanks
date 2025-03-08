@@ -4,45 +4,49 @@
       <%= image_tag "top_image.jpg", alt: "桜の風景", class: "w-full rounded-lg shadow-lg" %>
     </div>
     <h2 style="color: #073472;" class="text-2xl font-semibold mb-4">
-     思い出の<span style="color: #DD7594;">桜</span>写真で大切な人に<span style="color: #DD7594;">感謝</span>を伝えよう
+     思い出の<span style="color: #DD7594;">桜</span>写真で<br>大切な人に<span style="color: #DD7594;">感謝</span>を伝えよう
     </h2>
     <!-- アコーディオンメニューの実装 -->
-    <div class="gap-8 mt-8">
-      <details class="overflow-hidden">
-        <summary class="p-4 text-xl font-medium text-white cursor-pointer btn border-none hover:opacity-80 flex justify-center" style="background-color: #4981CF;">
-             アプリの使い方
-        </summary>
-        <div class="p-4 bg-white border border-gray-200">
-          <div class="pt-4 text-left">
-            <h3 class="font-bold text-lg mb-2">全てのユーザー</h3>
-            <ul class="list-disc list-inside mb-4 ml-2">
-              <li>みんなの投稿一覧の閲覧</li>
-              <li>投稿の詳細の閲覧</li>
-            </ul>
-
-          <h3 class="font-bold text-lg mb-2">ログイン限定</h3>
-          <ul class="list-disc list-inside mb-4 ml-2">
-            <li>メッセージの作成と編集・削除</li>
-            <li>メッセージに対するコメント作成</li>
-            <li>Xシェア機能</li>
-            <li>お気に入り機能</li>
-          </ul>
-          
-          <h3 class="font-bold text-lg mb-2">アプリ活用例</h3>
-          <ol class="list-decimal list-inside ml-2">
-            <li>思い出の写真＋手書き風メッセージで感謝を伝える</li>
-            <li>共感できる投稿にコメントする<li>
-            <li>投稿をシェアする</li>
-            <li>お気に入り機能で印象的な投稿を保存する</li>
-          </ol>
+    <div class="flex justify-center mt-8 mb-8">
+    <details class="overflow-hidden rounded-lg w-auto transition-all duration-300" 
+            style="max-width: 32rem;">
+      <summary class="p-4 text-xl font-medium text-white cursor-pointer border-none hover:opacity-90 flex items-center justify-center w-full" 
+              style="background-color: #4981CF;">
+        <div class="flex items-center justify-center w-full">
+        <span>アプリの使い方</span>
+        <span class="ml-2 text-white" id="accordion-icon">＋</span>
         </div>
-      </div>
+      </summary>
+      <div class="p-4 bg-white border border-gray-200" data-target="accordion.content">
+      <div class="pt-4 text-left">
+        <h3 class="font-bold text-lg mb-2">全てのユーザー</h3>
+        <ul class="list-none mb-4 ml-2">
+          <li>・みんなの投稿一覧の閲覧</li>
+          <li>・投稿詳細の閲覧</li>
+        </ul>
+            <h3 class="font-bold text-lg mb-2">ログイン限定</h3>
+            <ul class="list-none list-inside mb-4 ml-2">
+              <li>・メッセージ作成・編集・削除</li>
+              <li>・メッセージに対するコメント作成</li>
+              <li>・Xシェア機能</li>
+              <li>・お気に入り機能</li>
+            </ul>
+            
+            <h3 class="font-bold text-lg mb-2">アプリ活用例</h3>
+            <ol class="list-none list-inside ml-2">
+              <li>・手書き風メッセージで感謝を伝える</li>
+              <li>・共感できる投稿にコメントする</li>
+              <li>・投稿をシェアする</li>
+              <li>・印象的な投稿をお気に入りで保存する</li>
+            </ol>
+          </div>
+        </div>
       </details>
     </div>
   
     <div class="flex justify-center gap-8 mt-8">
-    <%= link_to "投稿を見る", posts_path , class: "btn custom-text border-none hover:opacity-80", style: "background-color: #DD7594;" %>
-    <%= link_to "投稿する", new_post_path , class: "btn custom-text border-none hover:opacity-80", style: "background-color: #DD7594;" %>
-  </div>
+      <%= link_to "投稿を見る", posts_path , class: "btn custom-text border-none hover:opacity-80", style: "background-color: #DD7594;" %>
+      <%= link_to "投稿する", new_post_path , class: "btn custom-text border-none hover:opacity-80", style: "background-color: #DD7594;" %>
+    </div>
   </div>
 </div>
