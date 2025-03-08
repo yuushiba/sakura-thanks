@@ -8,7 +8,7 @@ application.register("autocomplete", AutocompleteController)
 
 console.log("Available controllers:", {
   "image-text": ImageTextController,
-  "autocomplete": AutocompleteController
+  "autocomplete": AutocompleteController,
 })
 
 application.register("image-text", ImageTextController)
