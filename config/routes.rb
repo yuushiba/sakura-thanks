@@ -31,6 +31,6 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   get "/form", to: "static_pages#form", as: :inquiry_form
-  get '/terms', to: 'static_pages#terms', as: :terms
-  get '/privacy', to: 'static_pages#privacy', as: :privacy
+  get "/terms", to: "static_pages#terms", as: :terms
+  get "/privacy", to: "static_pages#privacy", as: :privacy
 end
