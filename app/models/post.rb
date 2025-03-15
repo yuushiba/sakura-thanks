@@ -56,63 +56,6 @@ class Post < ApplicationRecord
     image.attached? ? image : "Cropped_Image copy.png"
   end
 
-  def debug_image_processing
-    return { success: false, message: "No image or text" } unless image.attached? && overlay_text.present?
-
-    begin
-      variant = preview_with_text
-      processed = variant.processed
-      Rails.logger.info "画像処理成功: #{overlay_text}"
-      { success: true, message: "画像処理成功", variant: variant }
-    rescue => e
-      Rails.logger.error "画像処理エラー: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      { success: false, message: e.message }
-    end
-  end
-
-  def debug_font_path
-    font_path = "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf"
-    {
-      exists: File.exist?(font_path),
-      readable: File.readable?(font_path),
-      path: font_path
-    }
-  end
-
-  def debug_font_setup
-    font_path = Rails.root.join("app/assets/fonts/Yomogi-Regular.ttf").to_s
-    docker_font_path = "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf"
-
-    {
-      rails_root: Rails.root.to_s,
-      app_font_exists: File.exist?(font_path),
-      app_font_readable: File.readable?(font_path),
-      docker_font_exists: File.exist?(docker_font_path),
-      docker_font_readable: File.readable?(docker_font_path)
-    }
-  end
-  def debug_font_info
-    {
-      available_fonts: `fc-list`.split("\n"),
-      image_magick_fonts: `convert -list font`.split("\n"),
-      current_font: "/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf",
-      font_exists: File.exist?("/usr/share/fonts/truetype/custom/Yomogi-Regular.ttf")
-    }
-  rescue => e
-    { error: e.message }
-  end
-
-  def debug_image_dimensions
-    return unless image.attached?
-
-    variant = image.variant(resize_to_limit: [ 800, 800 ])
-    metadata = variant.processed.metadata
-
-    Rails.logger.debug "Image dimensions: #{metadata['width']}x#{metadata['height']}"
-    Rails.logger.debug "Display dimensions: 800x800"
-  end
-
   def self.ransackable_attributes(auth_object = nil)
     [ "title", "content", "created_at", "id", "user_id", "overlay_text" ]
   end
