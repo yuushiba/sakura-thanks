@@ -1,25 +1,34 @@
 ja:
   activerecord:
     attributes:
-    errors:
-      models:
-        post:
-          attributes:
-            image:
-              too_large: "は%{count}MB以下にしてください"
-              invalid_format: "はJPEG、JPG、PNG、GIF形式でアップロードしてください"
       user:
         password: "パスワード"
         password_confirmation: "パスワード確認"
+        name: "名前"
+        email: "メールアドレス"
       post:
         title: "タイトル"
         content: "内容"
         overlay_text: "オーバーレイテキスト"
         text_x_position: "テキストX座標"
         text_y_position: "テキストY座標"
+        image: "画像"
     errors:
+      messages:
+        blank: "を入力してください"
+        invalid: "は不正な値です"
+        taken: "はすでに存在します"
+        too_short: "は%{count}文字以上で入力してください"
+        too_long: "は%{count}文字以内で入力してください"
+        confirmation: "と%{attribute}の入力が一致しません"
+        not_a_number: "は数値で入力してください"
       models:
         user:
           attributes:
             password_confirmation:
               confirmation: "とパスワードの入力が一致しません"
+        post:
+          attributes:
+            image:
+              too_large: "は%{count}MB以下にしてください"
+              invalid_format: "はJPEG、JPG、PNG、GIF形式でアップロードしてください"
