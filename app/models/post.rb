@@ -37,16 +37,8 @@ class Post < ApplicationRecord
     preview_with_text
   end
 
-  # 属性名を日本語化
-  def self.human_attribute_name(attr, options = {})
-    {
-      title: "タイトル",
-      content: "内容"
-    }[attr.to_sym] || super
-  end
-
-  validates :title, presence: { message: "を入力してください" }
-  validates :content, presence: { message: "を入力してください" }
+  validates :title, presence: true
+  validates :content, presence: true
 
   # 画像のチェック（画像がある場合のみ実行）
   validate :validate_image, if: :image_attached?
@@ -77,12 +69,12 @@ class Post < ApplicationRecord
 
     # ファイルサイズのチェック（10MB以下）
     if image.blob.byte_size > 10.megabytes
-      errors.add(:image, "は10MB以下にしてください")
+      errors.add(:image, :too_large, count: 10)
       image.purge  # 大きすぎる画像を削除
     end
 
     unless image.content_type.in?(%w[image/jpeg image/jpg image/png image/gif])
-      errors.add(:image, "はJPEG、JPG、PNG、GIF形式でアップロードしてください")
+      errors.add(:image, :invalid_format)
       image.purge # 不適切な画像を削除
     end
   end

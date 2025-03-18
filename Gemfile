@@ -25,6 +25,8 @@ gem "sorcery", "0.16.3"
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
+gem "rails-i18n"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 gem "aws-sdk-s3", require: false
@@ -51,6 +53,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
   gem "pry-byebug"
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"  # テストデータ生成用
+  gem "simplecov", require: false  # カバレッジ計測用
 end
 
 group :development do

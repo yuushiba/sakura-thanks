@@ -1,0 +1,25 @@
+ja:
+  activerecord:
+    attributes:
+    errors:
+      models:
+        post:
+          attributes:
+            image:
+              too_large: "は%{count}MB以下にしてください"
+              invalid_format: "はJPEG、JPG、PNG、GIF形式でアップロードしてください"
+      user:
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+      post:
+        title: "タイトル"
+        content: "内容"
+        overlay_text: "オーバーレイテキスト"
+        text_x_position: "テキストX座標"
+        text_y_position: "テキストY座標"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "とパスワードの入力が一致しません"
