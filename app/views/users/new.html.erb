@@ -2,6 +2,16 @@
   <h1 style="color: #073472;" class="text-2xl font-bold text-center mb-8">新規登録</h1>
 
   <%= form_with(model: @user, local: true) do |f| %>
+    <% if @user.errors.any? %>
+      <div class="space-y-2 mb-4 mx-auto w-3/5">
+        <% @user.errors.full_messages.each do |message| %>
+          <div class="alert alert-error w-full text-sm shadow-lg">
+            <%= message %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
     <div class="space-y-6">
       <div class="mx-auto w-3/5">
         <%= f.label :name, "ユーザーネーム", class: "label", style: "color: #073472;" %>

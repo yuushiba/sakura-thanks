@@ -19,7 +19,7 @@
       class="space-y-4">
   <%# プレビューエリア %>
   <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden relative" 
-       style="background-color: #D9D9D9 !important; min-height: 200px;">
+      style="background-color: #D9D9D9 !important; min-height: 200px;">
     <% if post.persisted? && post.image.attached? %>
       <%= image_tag post.preview_with_text, class: "w-full h-full object-cover" %>
     <% else %>
