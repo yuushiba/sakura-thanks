@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        password: "パスワード"
+        password_confirmation: "パスワード確認"
+      post:
+        title: "タイトル"
+        content: "内容"
+        overlay_text: "オーバーレイテキスト"
+        text_x_position: "テキストX座標"
+        text_y_position: "テキストY座標"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "とパスワードの入力が一致しません"

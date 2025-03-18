@@ -20,8 +20,8 @@ RSpec.describe User, type: :model do
     end
 
     it '重複したメールアドレスなら無効であること' do
-      create(:user, email: 'test@example.com')
-      user = build(:user, email: 'test@example.com')
+      create(:user, email: 'duplicate@example.com')
+      user = build(:user, email: 'duplicate@example.com')
       user.valid?
       expect(user.errors[:email]).to include('はすでに存在します')
     end
