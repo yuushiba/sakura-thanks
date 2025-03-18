@@ -51,7 +51,7 @@ RSpec.describe User, type: :model do
     it 'ユーザーが削除されると、関連する投稿も削除されること' do
       user = create(:user)
       create(:post, user: user)
-      
+
       expect { user.destroy }.to change { Post.count }.by(-1)
     end
   end

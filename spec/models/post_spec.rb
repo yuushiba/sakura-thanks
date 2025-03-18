@@ -66,7 +66,7 @@ RSpec.describe Post, type: :model do
         end
         post
       end
-  
+
       it 'display_imageメソッドが画像を返すこと' do
         # まず画像が添付されていることを確認
         expect(post.image.attached?).to be true

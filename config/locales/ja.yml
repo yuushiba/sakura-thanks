@@ -1,6 +1,13 @@
 ja:
   activerecord:
     attributes:
+    errors:
+      models:
+        post:
+          attributes:
+            image:
+              too_large: "は%{count}MB以下にしてください"
+              invalid_format: "はJPEG、JPG、PNG、GIF形式でアップロードしてください"
       user:
         password: "パスワード"
         password_confirmation: "パスワード確認"
