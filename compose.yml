@@ -19,6 +19,15 @@ services:
       retries: 3
       start_period: 30s
 
+  selenium_chrome:
+    image: selenium/standalone-chrome:latest
+    platform: linux/amd64
+    volumes:
+      - /dev/shm:/dev/shm
+    environment:
+      - SCREEN_WIDTH=1680
+      - SCREEN_HEIGHT=1050
+
   web:
     build:
       context: .
@@ -41,11 +50,15 @@ services:
       DATABASE_HOST: db
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: password
+      # システムテスト用のSelenium設定
+      SELENIUM_DRIVER_URL: http://selenium_chrome:4444/wd/hub
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
+      selenium_chrome:
+        condition: service_started
     tty: true
     stdin_open: true
 

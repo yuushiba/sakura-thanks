@@ -9,7 +9,8 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # return unless Rails.env.test?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-
+# support/ディレクトリ内のファイルを読み込む設定
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -68,4 +69,13 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods  # FactoryBotの省略記法を有効化
+  # システムテスト設定
+  config.before(:each, type: :system) do
+    driven_by :remote_chrome
+    Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
+    Capybara.server_port = 4000
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
+    # ヘッドレスなブラウザテストではhiddenエレメントも扱い可能
+    Capybara.ignore_hidden_elements = false
+  end
 end
