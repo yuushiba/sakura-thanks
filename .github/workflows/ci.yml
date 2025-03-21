@@ -51,10 +51,10 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
       # seleniumサービスを追加
-      selenium:
-        image: selenium/standalone-chrome
-        ports:
-          - 4444:4444
+      selenium_chrome:  # 変更: seleniumからselenium_chromeに
+      image: selenium/standalone-chrome
+      ports:
+        - 4444:4444
 
     steps:
       - name: Install packages
@@ -85,6 +85,7 @@ jobs:
           DATABASE_HOST: 127.0.0.1
           DATABASE_USERNAME: root
           DATABASE_PASSWORD: password
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
         run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests
