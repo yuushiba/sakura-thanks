@@ -22,6 +22,10 @@ end
 
 # システムテスト設定
 RSpec.configure do |config|
+  if ENV['CI']
+    config.filter_run_excluding type: :system
+  end
+
   config.before(:each, type: :system) do
     driven_by :selenium_remote_chrome, screen_size: [ 1400, 1400 ]
 

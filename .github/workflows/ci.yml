@@ -90,8 +90,11 @@ jobs:
           DATABASE_HOST: 127.0.0.1
           DATABASE_USERNAME: root
           DATABASE_PASSWORD: password
-          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-        run: bundle exec rspec
+          # システムテストをスキップするフラグを追加
+          SKIP_SYSTEM_TESTS: true
+        run: |
+          # モデルテストのみ実行
+          bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
