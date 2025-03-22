@@ -1,4 +1,8 @@
 require 'capybara/rspec'
+require 'webdrivers/chromedriver'
+
+# ChromeDriverのバージョンを明示的に指定
+Webdrivers::Chromedriver.required_version = '134.0.6998.1'
 
 # CI環境ではシステムテストをスキップする
 RSpec.configure do |config|
@@ -15,17 +19,9 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     # CI環境とローカル環境で異なる設定
     if ENV['CI']
-      driven_by :selenium, using: :chrome, options: {
-        browser: :chrome,
-        capabilities: [
-          Selenium::WebDriver::Chrome::Options.new.tap do |opts|
-            opts.add_argument('--headless')
-            opts.add_argument('--no-sandbox')
-            opts.add_argument('--disable-dev-shm-usage')
-          end
-        ]
-      }
-      puts "🌐 CI環境用のローカルChromeブラウザ設定を使用します"
+      # ChromeDriverの代わりにFirefoxを使用する
+      driven_by :selenium, using: :firefox, screen_size: [ 1400, 1400 ]
+      puts "🌐 CI環境ではFirefoxを使用します"
     else
       # ローカル環境では以前と同じ設定
       remote_url = 'http://selenium_chrome:4444/wd/hub'
