@@ -90,12 +90,10 @@ jobs:
           DATABASE_HOST: 127.0.0.1
           DATABASE_USERNAME: root
           DATABASE_PASSWORD: password
-          # システムテストをスキップするフラグを追加
-          SKIP_SYSTEM_TESTS: true
+          CI: true
         run: |
-          # モデルテストのみ実行
-          bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
-
+          # システムテスト除外のオプション削除
+          bundle exec rspec
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
         if: failure()
