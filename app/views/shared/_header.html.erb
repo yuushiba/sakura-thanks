@@ -6,15 +6,30 @@
           Sakura Thanks
         <% end %>
       </div>
-      <div class="flex-none gap-4">
-        <%= link_to "一覧ページ", posts_path, class: "custom-text hover:opacity-80" %>
+      
+      <!-- ナビゲーションメニュー -->
+      <div class="flex gap-4">
+        <%= link_to "一覧ページ", posts_path, class: "custom-text hover:opacity-80 text-sm md:text-base" %>
+        
         <% if logged_in? %>
-          <%= link_to "マイページ", mypage_path, class: "custom-text hover:opacity-80" %>
-          <%= link_to "お気に入り", bookmarks_posts_path, class: "custom-text hover:opacity-80" %>
-          <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "custom-text hover:opacity-80" %>
+          <%= link_to "マイページ", mypage_path, class: "custom-text hover:opacity-80 text-sm md:text-base" %>
+          
+          <!-- ログイン時のみハンバーガーメニュー表示 -->
+          <div class="dropdown dropdown-end" onclick="this.querySelector('.dropdown-content').classList.toggle('hidden')">
+            <label tabindex="0" class="btn btn-ghost btn-circle hover:bg-blue-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+            </label>
+            <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow rounded-box w-52 z-50">
+              <li><%= link_to "お気に入り", bookmarks_posts_path, class: "custom-text" %></li>
+              <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "custom-text" %></li>
+            </ul>
+          </div>
         <% else %>
-          <%= link_to "ログイン", login_path, class: "custom-text hover:opacity-80" %>
-          <%= link_to "新規登録", new_user_path, class: "custom-text hover:opacity-80" %>
+          <!-- 未ログイン時のメニュー項目 -->
+          <%= link_to "ログイン", login_path, class: "custom-text hover:opacity-80 text-sm md:text-base" %>
+          <%= link_to "新規登録", new_user_path, class: "custom-text hover:opacity-80 text-sm md:text-base" %>
         <% end %>
       </div>
     </div>
