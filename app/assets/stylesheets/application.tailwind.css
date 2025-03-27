@@ -24,3 +24,31 @@
   font-family: 'YOMOGI';
   src: url('../fonts/YOMOGI-Regular.ttf') format('truetype');
 }
+
+/* ハンバーガーメニュー用のカスタムスタイル */
+.dropdown-content {
+  /* 初期状態で非表示 */
+  display: none;
+}
+
+/* メニュー項目のスタイリング */
+.dropdown .menu li {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown .menu li:last-child {
+  margin-bottom: 0;
+}
+
+.dropdown .menu a {
+  color: white !important;
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.dropdown .menu a:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}

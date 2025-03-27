@@ -1,11 +1,11 @@
 <footer style="background-color: #89AAD3" class="py-4">
   <div class="container mx-auto px-4">
-    <div class="flex justify-center space-x-8">
-      <%= link_to "プライバシーポリシー",privacy_path , class: "custom-text hover:opacity-80" %>
-      <%= link_to "利用規約", terms_path , class: "custom-text hover:opacity-80" %>
-      <%= link_to "お問い合わせ", inquiry_form_path, class: "custom-text hover:opacity-80" %>
+    <div class="flex flex-wrap justify-center gap-4 md:gap-8">
+      <%= link_to "プライバシーポリシー", privacy_path, class: "custom-text hover:opacity-80 text-sm md:text-base lg:text-lg" %>
+      <%= link_to "利用規約", terms_path, class: "custom-text hover:opacity-80 text-sm md:text-base lg:text-lg" %>
+      <%= link_to "お問い合わせ", inquiry_form_path, class: "custom-text hover:opacity-80 text-sm md:text-base lg:text-lg" %>
     </div>
-    <div class="text-center custom-text mt-4">
+    <div class="text-center custom-text mt-4 text-sm md:text-base lg:text-lg">
       <p>© <%= Time.current.year %> Sakura Thanks - All rights reserved</p>
     </div>
   </div>
