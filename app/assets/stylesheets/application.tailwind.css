@@ -27,22 +27,26 @@
 
 /* ハンバーガーメニュー用のカスタムスタイル */
 .dropdown-content {
+  /* 初期状態で非表示 */
   display: none;
 }
 
-.dropdown:hover .dropdown-content,
-.dropdown:focus-within .dropdown-content,
-.dropdown-content[data-show="true"] {
-  display: block !important;
+/* メニュー項目のスタイリング */
+.dropdown .menu li {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5rem;
 }
 
-/* メニュー背景と文字色のカスタマイズ */
-.dropdown .menu {
-  background-color: #89AAD3 !important; 
+.dropdown .menu li:last-child {
+  margin-bottom: 0;
 }
 
 .dropdown .menu a {
   color: white !important;
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
 }
 
 .dropdown .menu a:hover {

@@ -1,3 +1,4 @@
+<!-- app/views/shared/_header.html.erb -->
 <header style="background-color: #89AAD3">
   <div class="container mx-auto px-4">
     <div class="navbar min-h-16">
@@ -14,17 +15,21 @@
         <% if logged_in? %>
           <%= link_to "マイページ", mypage_path, class: "custom-text hover:opacity-80 text-sm md:text-base" %>
           
-          <!-- ログイン時のみハンバーガーメニュー表示 -->
-          <div class="dropdown dropdown-end" onclick="this.querySelector('.dropdown-content').classList.toggle('hidden')">
-            <label tabindex="0" class="btn btn-ghost btn-circle hover:bg-blue-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-              </svg>
-            </label>
-            <ul tabindex="0" class="menu dropdown-content mt-3 p-2 shadow rounded-box w-52 z-50">
-              <li><%= link_to "お気に入り", bookmarks_posts_path, class: "custom-text" %></li>
-              <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "custom-text" %></li>
-            </ul>
+          <!-- ログイン時のみハンバーガーメニュー表示 - Stimulus対応 -->
+          <div data-controller="dropdown" class="dropdown dropdown-end relative">
+            <button type="button" data-action="click->dropdown#toggle" class="btn btn-ghost p-2" 
+                    style="background-color: transparent;">
+              <i class="fas fa-bars text-white text-lg"></i>
+            </button>
+            <div data-dropdown-target="content" class="dropdown-content absolute right-0 mt-2 p-2 shadow rounded-box w-52 z-50"
+                style="background-color: #89AAD3; display: none;">
+              <div class="w-full mb-2">
+                <%= link_to "お気に入り", bookmarks_posts_path, class: "custom-text block py-2 px-4 hover:bg-opacity-20 rounded" %>
+              </div>
+              <div class="w-full">
+                <%= link_to "ログアウト", logout_path, data: { turbo_method: :delete }, class: "custom-text block py-2 px-4 hover:bg-opacity-20 rounded" %>
+              </div>
+            </div>
           </div>
         <% else %>
           <!-- 未ログイン時のメニュー項目 -->
