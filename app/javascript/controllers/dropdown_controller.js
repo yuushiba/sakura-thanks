@@ -1,5 +1,4 @@
 // app/javascript/controllers/dropdown_controller.js
-console.log("ドロップダウンコントローラーファイル読み込み成功");
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {

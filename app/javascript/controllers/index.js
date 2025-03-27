@@ -1,5 +1,4 @@
 // app/javascript/controllers/index.js
-console.log("ドロップダウンコントローラー登録開始");
 console.log("Loading controllers/index.js")
 
 import { application } from "./application"
