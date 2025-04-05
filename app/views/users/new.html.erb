@@ -33,6 +33,10 @@
         <%= f.password_field :password_confirmation, class: "input input-bordered w-full", style: "background-color: #FFFFFF;" %>
       </div>
 
+      <div class="text-center mt-8">
+        <%= f.submit "新規登録", class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
+      </div>
+
       <div class="text-center text-sm">
         または
       <div>
@@ -41,11 +45,6 @@
         <%= link_to auth_at_provider_path(:google), class: "inline-block" do %>
           <%= image_tag "google_sign_up.png", class: "mx-auto w-3/5" %>
         <% end %>
-      </div>
-    </div>
-
-      <div class="text-center mt-8">
-        <%= f.submit "新規登録", class: "btn custom-text border-none hover:opacity-80", style: "background-color: #4981CF;" %>
       </div>
     </div>
   <% end %>
