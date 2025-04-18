@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe 'ユーザー管理機能', type: :system do
   describe 'ユーザー新規登録' do
     context '適切な値を入力した場合' do
-      it 'ユーザー登録に成功する' do
+      # この1つのテストだけCI環境で実行するためにタグを付ける
+      it 'ユーザー登録に成功する', first_ci_system_test: true do
         visit new_user_path
 
         # フォームに値を入力
