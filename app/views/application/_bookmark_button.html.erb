@@ -4,13 +4,13 @@
                  method: :delete,
                  class: "bookmark-btn",
                  data: { turbo_method: :delete, turbo_stream: true } do %>
-                  <i class="fas fa-heart"></i>
+                  <i class="fas fa-heart" style="color: #DD7594;"></i>
     <% end %>
   <% else %>
     <%= button_to bookmarks_path(post_id: post.id), 
                  class: "bookmark-btn",
                  data: { turbo_stream: true } do %>
-                  <i class="far fa-heart"></i>
+                  <i class="far fa-heart text-gray-400 hover:opacity-80"></i>
     <% end %>
   <% end %>
 </div>
