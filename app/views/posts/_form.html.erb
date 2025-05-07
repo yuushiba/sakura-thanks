@@ -13,62 +13,63 @@
       <% end %>
       
       <%# プレビュー・文字入力エリア全体をimage-textコントローラーで制御 %>
-      <div data-controller="image-text" 
-      data-action="turbo:load->image-text#initialize"
-      class="space-y-4">
-  <%# プレビューエリア %>
-  <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden relative" 
-      style="background-color: #D9D9D9 !important; min-height: 200px;">
-    <% if post.persisted? && post.image.attached? %>
-      <%= image_tag post.preview_with_text, class: "w-full h-full object-cover" %>
-    <% else %>
-      <div class="w-1/2 h-1/2 flex items-center justify-center">
-        <span class="text-gray-600">画像を選択してください</span>
+      <div  data-controller="image-text" 
+            data-action="turbo:load->image-text#initialize"
+            class="space-y-4">
+      <%# プレビューエリア %>
+      <div id="image-preview" class="w-full flex items-center justify-center overflow-hidden relative" 
+          style="background-color: #D9D9D9 !important; min-height: 200px;">
+        <% if post.persisted? && post.image.attached? %>
+          <%= image_tag post.preview_with_text, class: "w-full h-full object-cover" %>
+        <% else %>
+          <div class="w-1/2 h-1/2 flex items-center justify-center">
+            <span class="text-gray-600">画像を選択してください</span>
+          </div>
+        <% end %>
+        <div class="overlay-text-container absolute top-0 left-0 w-full h-full pointer-events-none"></div>
       </div>
-    <% end %>
-    <div class="overlay-text-container absolute top-0 left-0 w-full h-full pointer-events-none"></div>
-  </div>
 
-  <%# 画像アップロード %>
-  <div>
-  <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
-  <%= f.file_field :image, 
-      class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
-      accept: "image/jpeg,image/gif,image/png",
-      data: { 
-        "image-text-target": "fileInput",
-        action: "change->image-text#handleFileChange"
-      } %>
-</div>
-
-  <%# テキスト入力と位置調整 %>
-  <div class="space-y-4">
-    <div>
-      <label class="block text-sm font-medium mb-2" style="color: #073472;">画像に入れたい文字(任意)</label>
-      <%= f.text_field :overlay_text, 
-          class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
-          placeholder: "画像に表示する文字を入力（20文字以内）",
+      <%# 画像アップロード %>
+      <div>
+      <%= f.label :image, "画像(任意)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+      <%= f.file_field :image, 
+          class: "w-full rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+          accept: "image/jpeg,image/gif,image/png",
           data: { 
-            "image-text-target": "input",
-            action: "input->image-text#updatePreview"
+            "image-text-target": "fileInput",
+            action: "change->image-text#handleFileChange"
           } %>
-    </div>
+      </div>
 
-    <%= f.hidden_field :text_x_position, value: 0, data: { "image-text-target": "xPosition" } %>
-    <%= f.hidden_field :text_y_position, value: 0, data: { "image-text-target": "yPosition" } %>
+      <%# テキスト入力と位置調整 %>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: #073472;">画像に入れたい文字(任意)</label>
+          <%= f.text_field :overlay_text, 
+              class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
+              placeholder: "画像に表示する文字を入力してください",
+              data: { 
+                "image-text-target": "input",
+                action: "input->image-text#updatePreview"
+              } %>
+        <p class="text-xs text-gray-500 mt-1">20文字以内で入力してください</p>
+        </div>
 
-    <%# 位置調整ボタン %>
-    <div>
-      <label class="block text-sm font-medium mb-2" style="color: #073472;">文字の位置調整</label>
-      <div class="flex justify-center gap-2">
-        <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveUp">↑</button>
-        <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveLeft">←</button>
-        <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveRight">→</button>
-        <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveDown">↓</button>
+        <%= f.hidden_field :text_x_position, value: 0, data: { "image-text-target": "xPosition" } %>
+        <%= f.hidden_field :text_y_position, value: 0, data: { "image-text-target": "yPosition" } %>
+
+        <%# 位置調整ボタン %>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: #073472;">文字の位置調整</label>
+          <div class="flex justify-center gap-2">
+            <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveUp">↑</button>
+            <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveLeft">←</button>
+            <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveRight">→</button>
+            <button type="button" class="btn btn-sm btn-primary" data-action="click->image-text#moveDown">↓</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
       <%# その他のフォームフィールド %>
       <div>
