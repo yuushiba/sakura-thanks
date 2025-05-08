@@ -1,5 +1,5 @@
 # sakura thanks（サクラサンクス）
-
+![Image](https://github.com/user-attachments/assets/14ad1b99-f926-4949-87ae-6c45fdbd4a03)
 ## サービス概要
 
 桜の写真と感謝のメッセージを共有できるプラットフォーム<br>
