@@ -1,4 +1,4 @@
-# sakura-thanks
+# sakura thanks（サクラサンクス）
 
 ## サービス概要
 
