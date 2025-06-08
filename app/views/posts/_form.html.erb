@@ -73,14 +73,14 @@
 
       <%# その他のフォームフィールド %>
       <div>
-        <%= f.label :title, "タイトル", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+        <%= f.label :title, "タイトル(必須)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
         <%= f.text_field :title, 
             class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary", 
             placeholder: "タイトルを入力してください" %>
       </div>
 
       <div>
-        <%= f.label :content, "内容", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
+        <%= f.label :content, "内容(必須)", class: "block text-sm font-medium mb-2", style: "color: #073472;" %>
         <%= f.text_area :content, 
             rows: 5, 
             class: "w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary",
